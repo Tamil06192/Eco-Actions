@@ -16,6 +16,12 @@ import {
     Award
 } from 'lucide-react';
 
+import event1 from '../assets/images/event-1.jpg';
+import event2 from '../assets/images/event-2.jpg';
+import event3 from '../assets/images/event-3.jpg';
+import event4 from '../assets/images/event-4.jpg';
+import event5 from '../assets/images/event-5.jpg';
+
 const VolunteerDashboard = () => {
     const { user } = useAuth();
     const location = useLocation();
@@ -103,44 +109,55 @@ const VolunteerDashboard = () => {
         </div>
     );
 
-    const renderTaskBoard = () => (
-        <div className="p-6 animate-fade-in max-w-6xl mx-auto">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Available Volunteer Opportunities</h1>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                    <div key={i} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col hover:shadow-md transition-shadow">
-                        <div className="relative h-48">
-                            <img
-                                src={`https://images.unsplash.com/photo-${1550000000000 + i}?auto=format&fit=crop&q=80&w=400`}
-                                alt="Task"
-                                className="w-full h-full object-cover"
-                            />
-                            <div className="absolute top-4 right-4 bg-white dark:bg-gray-900 px-2 py-1 rounded-full text-xs font-bold text-emerald-600 shadow-sm">
-                                5 Spots Left
-                            </div>
-                        </div>
-                        <div className="p-5 flex-1 flex flex-col">
-                            <div className="flex justify-between items-start mb-2">
-                                <span className="px-2 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs rounded-full font-medium">Open</span>
-                                <span className="text-xs text-gray-500">2 days left</span>
-                            </div>
-                            <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2">Park Cleanup Helper {i}</h3>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 line-clamp-2">
-                                We need volunteers to help clear debris from the north section of Central Park after the storm. Join us to make a difference!
-                            </p>
-                            <div className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
-                                <div className="flex items-center gap-1 text-sm text-gray-500">
-                                    <Clock size={14} />
-                                    <span>4 hrs</span>
+    const renderTaskBoard = () => {
+        const tasks = [
+            { id: 1, title: 'Beach Cleanup', image: event1, location: 'Sunny Beach', duration: '3 hrs', spots: 5, description: 'Join us for our monthly beach cleanup event to protect marine life and keep our shores beautiful.' },
+            { id: 2, title: 'Tree Planting', image: event2, location: 'City Park', duration: '4 hrs', spots: 12, description: 'Help us expand our urban forest! We are planting 50 new saplings this weekend.' },
+            { id: 3, title: 'Community Gardening', image: event3, location: 'Green Valley', duration: '2 hrs', spots: 8, description: 'Spend a morning in our community garden. No experience needed, we will provide tools.' },
+            { id: 4, title: 'Waste Sorting', image: event4, location: 'Recycling Center', duration: '3 hrs', spots: 4, description: 'Learn about zero-waste living while helping us sort community donations.' },
+            { id: 5, title: 'Environmental Workshop', image: event5, location: 'Eco Hub', duration: '2 hrs', spots: 20, description: 'Help us set up and manage an educational workshop for local school children.' },
+            { id: 6, title: 'River Restoration', image: event1, location: 'Riverside Park', duration: '5 hrs', spots: 6, description: 'Assist in removing invasive species and restoring the natural riverbank habitat.' },
+        ];
+
+        return (
+            <div className="p-6 animate-fade-in max-w-6xl mx-auto">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Available Volunteer Opportunities</h1>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {tasks.map((task) => (
+                        <div key={task.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+                            <div className="relative h-48">
+                                <img
+                                    src={task.image}
+                                    alt={task.title}
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="absolute top-4 right-4 bg-white dark:bg-gray-900 px-2 py-1 rounded-full text-xs font-bold text-emerald-600 shadow-sm">
+                                    {task.spots} Spots Left
                                 </div>
-                                <Button size="sm">Sign Up</Button>
+                            </div>
+                            <div className="p-5 flex-1 flex flex-col">
+                                <div className="flex justify-between items-start mb-2">
+                                    <span className="px-2 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs rounded-full font-medium">Open</span>
+                                    <span className="text-xs text-gray-500">2 days left</span>
+                                </div>
+                                <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2">{task.title}</h3>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 line-clamp-2">
+                                    {task.description}
+                                </p>
+                                <div className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                                    <div className="flex items-center gap-1 text-sm text-gray-500">
+                                        <Clock size={14} />
+                                        <span>{task.duration}</span>
+                                    </div>
+                                    <Button size="sm">Sign Up</Button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
-        </div>
-    );
+        );
+    };
 
     const renderMyShifts = () => (
         <div className="p-6 animate-fade-in max-w-4xl mx-auto">

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Button from '../components/Button';
 import { useAuth } from '../context/AuthContext'; // Import useAuth
-import { User, ShieldCheck, ArrowLeft } from 'lucide-react'; // Import icons
+import { User, Users, ShieldCheck, ArrowLeft } from 'lucide-react'; // Import icons
 import adminLoginImg from '../assets/images/admin-login.jpg';
 import volunteerLoginImg from '../assets/images/volunteer-hero.jpg';
 import citizenLoginImg from '../assets/images/citizen-login.jpg';
@@ -16,9 +16,8 @@ const Login = () => {
     const searchParams = new URLSearchParams(location.search);
     const roleParam = searchParams.get('role');
 
-    // Set initial login type based on param, or default to null/user if not present
-    // We'll treat 'citizen' as 'user' for internal logic if needed, or keep as 'citizen' string
-    const [loginType, setLoginType] = useState(roleParam === 'citizen' ? 'user' : roleParam || null);
+    // Set initial login type based on param, or default to 'user' if not present
+    const [loginType, setLoginType] = useState(roleParam === 'citizen' ? 'user' : roleParam || 'user');
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -54,18 +53,18 @@ const Login = () => {
         console.log('Login attempt:', { loginType, email, password });
 
         if (loginType === 'admin') {
-            // Hardcoded admin check
-            if (email === 'sample' && password === 'sample') {
+            // Admin check using simplified credentials if through the generic portal
+            if (email === 'admin' && password === 'admin') {
                 console.log('Admin login success');
                 login({ name: 'Admin User', email, role: 'admin' });
             } else {
-                setError('Invalid admin credentials. Try sample / sample');
+                setError('Invalid admin credentials. Try admin / admin');
             }
         } else if (loginType === 'volunteer') {
             // Mock volunteer login
             if (email && password) {
                 console.log('Volunteer login success');
-                login({ name: 'Volunteer Name', email, role: 'volunteer' }); // You might need to handle 'volunteer' role in your App/Auth context if specific logic exists
+                login({ name: 'Volunteer Name', email, role: 'volunteer' });
             } else {
                 setError('Please fill in all fields');
             }
@@ -87,68 +86,6 @@ const Login = () => {
             case 'user': default: return 'Citizen Sign In';
         }
     };
-
-    // If no specific role is selected (e.g. direct access to /login), show selection or default to Citizen
-    // For now, if no format selected, we can show the selection cards, BUT the navbar dropdown sends specific roles.
-    // If we want to support /login access without param, we keep the card selection.
-
-    if (!loginType) {
-        // ... existing card selection code ...
-        // For brevity in this replace, assuming we might still want the cards if someone goes straight to /login
-        // BUT the user request implies navigation from dropdown. 
-        // Let's keep the card selection for fallback but update it to include Volunteer if needed, 
-        // or just auto-redirect to citizen if that's preferred. 
-        // The original code had cards for User and Admin. Let's keep existing structure for no-param access.
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
-                <div className="max-w-4xl w-full space-y-8">
-                    <div className="text-center">
-                        <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
-                            Welcome to EcoAction
-                        </h2>
-                        <p className="mt-4 text-lg text-gray-500 dark:text-gray-400">
-                            Please select your login type to continue.
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
-                        {/* User Login Card */}
-                        <div onClick={() => { setLoginType('user'); navigate('/login?role=citizen'); }} className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all cursor-pointer border-2 border-transparent hover:border-primary-500 group">
-                            <div className="flex flex-col items-center text-center space-y-4">
-                                <div className="p-4 bg-primary-100 dark:bg-primary-900/50 rounded-full">
-                                    <User className="w-10 h-10 text-primary-600 dark:text-primary-400" />
-                                </div>
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Citizen</h3>
-                                <Button className="w-full mt-2">Login</Button>
-                            </div>
-                        </div>
-
-                        {/* Volunteer Login Card */}
-                        <div onClick={() => { setLoginType('volunteer'); navigate('/login?role=volunteer'); }} className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all cursor-pointer border-2 border-transparent hover:border-amber-500 group">
-                            <div className="flex flex-col items-center text-center space-y-4">
-                                <div className="p-4 bg-amber-100 dark:bg-amber-900/50 rounded-full">
-                                    <User className="w-10 h-10 text-amber-600 dark:text-amber-400" />
-                                </div>
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Volunteer</h3>
-                                <Button className="w-full mt-2 bg-amber-600 hover:bg-amber-700">Login</Button>
-                            </div>
-                        </div>
-
-                        {/* Admin Login Card */}
-                        <div onClick={() => { setLoginType('admin'); navigate('/login?role=admin'); }} className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all cursor-pointer border-2 border-transparent hover:border-blue-500 group">
-                            <div className="flex flex-col items-center text-center space-y-4">
-                                <div className="p-4 bg-blue-100 dark:bg-blue-900/50 rounded-full">
-                                    <ShieldCheck className="w-10 h-10 text-blue-600 dark:text-blue-400" />
-                                </div>
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Admin</h3>
-                                <Button className="w-full mt-2 bg-blue-600 hover:bg-blue-700">Login</Button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="min-h-screen flex">
@@ -174,6 +111,14 @@ const Login = () => {
                                 Or{' '}
                                 <Link to="/signup" className="font-medium text-primary-600 hover:text-primary-500">
                                     create a new account
+                                </Link>
+                            </p>
+                        )}
+                        {loginType === 'volunteer' && (
+                            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                                Don't have an account?{' '}
+                                <Link to="/signup/volunteer" className="font-medium text-amber-600 hover:text-amber-500">
+                                    Sign up here
                                 </Link>
                             </p>
                         )}
@@ -259,6 +204,32 @@ const Login = () => {
                                     <span><strong>Safety Tip:</strong> Report emergencies to local authorities immediately (911).</span>
                                 )}
                             </p>
+                        </div>
+                    </div>
+
+                    <div className="mt-10 pt-8 border-t border-gray-100 dark:border-gray-800">
+                        <div className="text-center space-y-4">
+                            <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Switch Login Portal</p>
+                            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+                                {loginType !== 'user' && (
+                                    <Link to="/login?role=citizen" onClick={() => setLoginType('user')} className="text-sm font-bold text-emerald-600 hover:text-emerald-500 flex items-center">
+                                        <User className="w-4 h-4 mr-1" />
+                                        Citizen
+                                    </Link>
+                                )}
+                                {loginType !== 'volunteer' && (
+                                    <Link to="/login?role=volunteer" onClick={() => setLoginType('volunteer')} className="text-sm font-bold text-amber-600 hover:text-amber-500 flex items-center">
+                                        <Users className="w-4 h-4 mr-1" />
+                                        Volunteer
+                                    </Link>
+                                )}
+                                {loginType !== 'admin' && (
+                                    <Link to="/admin/login" className="text-sm font-bold text-blue-600 hover:text-blue-500 flex items-center">
+                                        <ShieldCheck className="w-4 h-4 mr-1" />
+                                        Admin
+                                    </Link>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

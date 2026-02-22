@@ -23,6 +23,11 @@ import {
     Users
 } from 'lucide-react';
 
+// Import local images for urgency alerts
+import event1 from '../../assets/images/event-1.jpg';
+import event2 from '../../assets/images/event-2.jpg';
+import event3 from '../../assets/images/event-3.jpg';
+
 const AdminOverview = () => {
     // Mock Data
     const kpiData = [
@@ -48,6 +53,13 @@ const AdminOverview = () => {
         { name: 'May', reports: 56, solved: 50 },
         { name: 'Jun', reports: 55, solved: 48 },
         { name: 'Jul', reports: 40, solved: 35 },
+    ];
+
+    // Urgency Data with photos
+    const urgencyAlerts = [
+        { id: '#URG-1001', issue: 'Chemical Spill', location: 'Sector 4', time: '3h 30m', image: event1, type: 'Chemical' },
+        { id: '#URG-1002', issue: 'Sewage Overflow', location: 'Sector 5', time: '5h 30m', image: event2, type: 'Water' },
+        { id: '#URG-1003', issue: 'Illegal Dumping', location: 'Sector 6', time: '7h 30m', image: event3, type: 'Garbage' },
     ];
 
     return (
@@ -137,6 +149,7 @@ const AdminOverview = () => {
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead className="bg-gray-50 dark:bg-gray-700/50">
                             <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Report ID</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issue</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
@@ -145,14 +158,19 @@ const AdminOverview = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                            {[1, 2, 3].map((i) => (
+                            {urgencyAlerts.map((alert, i) => (
                                 <tr key={i}>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">#URG-{1000 + i}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">Chemical Spill</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Sector {i + 4}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-bold">{i * 2 + 1}h 30m</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="h-12 w-16 overflow-hidden rounded-lg shadow-sm">
+                                            <img src={alert.image} alt={alert.type} className="w-full h-full object-cover" />
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-mono">{alert.id}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-semibold">{alert.issue}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{alert.location}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-bold">{alert.time}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <button className="text-primary-600 hover:text-primary-900">View Details</button>
+                                        <button className="text-primary-600 hover:text-primary-900 px-3 py-1 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">View Details</button>
                                     </td>
                                 </tr>
                             ))}

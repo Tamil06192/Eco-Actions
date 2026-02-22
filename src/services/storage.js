@@ -1,13 +1,17 @@
-import { mockReports } from '../data/mockData';
+import { mockReports, MOCK_DATA_VERSION } from '../data/mockData';
 
 const STORAGE_KEY = 'eco_action_reports';
+const VERSION_KEY = 'eco_action_data_version';
 
 export const StorageService = {
     getReports: () => {
         const storedReports = localStorage.getItem(STORAGE_KEY);
-        if (!storedReports) {
-            // Initialize with mock data if empty
+        const storedVersion = localStorage.getItem(VERSION_KEY);
+
+        if (!storedReports || storedVersion !== MOCK_DATA_VERSION) {
+            // Initialize or update with new mock data
             localStorage.setItem(STORAGE_KEY, JSON.stringify(mockReports));
+            localStorage.setItem(VERSION_KEY, MOCK_DATA_VERSION);
             return mockReports;
         }
         return JSON.parse(storedReports);

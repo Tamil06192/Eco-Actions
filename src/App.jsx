@@ -15,6 +15,8 @@ import AdminComplaints from './pages/admin/AdminComplaints';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminGeo from './pages/admin/AdminGeo';
 import AdminReports from './pages/admin/AdminReports';
+import VolunteerSignup from './pages/VolunteerSignup';
+import AdminLogin from './pages/AdminLogin';
 
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -30,6 +32,8 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/signup/volunteer" element={<VolunteerSignup />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
               <Route
                 path="/dashboard/user/*"
                 element={

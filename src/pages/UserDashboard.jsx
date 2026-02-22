@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import { useAuth } from '../context/AuthContext';
 import { StorageService } from '../services/storage';
 import Button from '../components/Button';
 import DashboardLayout from '../components/DashboardLayout';
@@ -10,16 +13,22 @@ import {
     CheckCircle,
     Clock,
     Trophy,
+    PlusCircle,
     AlertTriangle,
     Leaf,
     Users,
     Calendar,
-    ArrowRight
+    ArrowRight,
+    User,
+    Mail,
+    Phone,
+    Award
 } from 'lucide-react';
 import dashboardBg from '../assets/images/dashboard-bg.jpg';
 import dashboardCard from '../assets/images/dashboard-card.jpg';
 
 const UserDashboard = () => {
+    const { user } = useAuth();
     const [reports, setReports] = useState([]);
     const [activeTab, setActiveTab] = useState('overview'); // overview, new-report, map, community
     const location = useLocation();
@@ -35,7 +44,8 @@ const UserDashboard = () => {
         if (path.includes('new-report')) setActiveTab('new-report');
         else if (path.includes('map')) setActiveTab('map');
         else if (path.includes('community')) setActiveTab('community');
-        else if (path.includes('profile')) setActiveTab('profile'); // Placeholder
+        else if (path.includes('profile')) setActiveTab('profile');
+        else if (path.includes('my-reports')) setActiveTab('my-reports');
         else setActiveTab('overview');
     }, [location]);
 
@@ -236,33 +246,38 @@ const UserDashboard = () => {
         </div>
     );
 
-    const renderMapView = () => (
-        <div className="h-full relative p-6 animate-fade-in flex flex-col">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Community Map</h1>
-            <div className="flex-1 bg-gray-200 dark:bg-gray-800 rounded-2xl overflow-hidden relative border border-gray-300 dark:border-gray-700">
-                {/* Map Implementation Placeholder */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800/50">
-                    <MapPin className="w-16 h-16 mb-4 text-emerald-500 animate-bounce" />
-                    <p className="text-lg font-medium">Interactive Map View</p>
-                    <p className="text-sm">Displaying {reports.length} active reports in your area</p>
+    const renderMapView = () => {
+        const center = [45.128, -93.461];
 
-                    {/* Simulated Map Markers */}
-                    <div className="absolute top-1/4 left-1/4 transform hover:scale-110 transition-transform cursor-pointer group">
-                        <MapPin className="w-8 h-8 text-red-500 drop-shadow-md" />
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white px-2 py-1 rounded shadow text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Garbage Dump</div>
-                    </div>
-                    <div className="absolute top-1/2 left-2/3 transform hover:scale-110 transition-transform cursor-pointer group">
-                        <MapPin className="w-8 h-8 text-amber-500 drop-shadow-md" />
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white px-2 py-1 rounded shadow text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Construction Debris</div>
-                    </div>
-                    <div className="absolute bottom-1/3 right-1/4 transform hover:scale-110 transition-transform cursor-pointer group">
-                        <MapPin className="w-8 h-8 text-emerald-500 drop-shadow-md" />
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white px-2 py-1 rounded shadow text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Tree Planting Site</div>
-                    </div>
+        return (
+            <div className="h-full relative p-6 animate-fade-in flex flex-col">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Community Map</h1>
+                <div className="flex-1 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden relative border border-gray-300 dark:border-gray-700 z-0">
+                    <MapContainer center={center} zoom={13} style={{ height: '100%', width: '100%' }}>
+                        <TileLayer
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        {reports.map((report) => {
+                            const [lat, lng] = report.location.split(',').map(coord => parseFloat(coord.trim()));
+                            if (isNaN(lat) || isNaN(lng)) return null;
+
+                            return (
+                                <Marker key={report.id} position={[lat, lng]}>
+                                    <Popup>
+                                        <div className="p-1">
+                                            <strong className="block text-sm font-bold">{report.title}</strong>
+                                            <span className="text-xs text-gray-500">{report.category} - {report.status}</span>
+                                        </div>
+                                    </Popup>
+                                </Marker>
+                            );
+                        })}
+                    </MapContainer>
                 </div>
             </div>
-        </div>
-    );
+        );
+    };
 
     const renderCommunity = () => (
         <div className="p-6 animate-fade-in max-w-6xl mx-auto">
@@ -272,16 +287,23 @@ const UserDashboard = () => {
                     <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
                         <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Leaderboard</h2>
                         <div className="space-y-4">
-                            {[1, 2, 3, 4, 5].map((i) => (
-                                <div key={i} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/30 rounded-xl">
-                                    <div className="flex items-center gap-3">
-                                        <span className={`w-6 text-center font-bold ${i === 1 ? 'text-yellow-500' : 'text-gray-500'}`}>{i}</span>
-                                        <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-600" />
-                                        <span className="font-medium text-gray-700 dark:text-gray-200">EcoUser_{100 + i}</span>
+                            {[1, 2, 3, 4, 5].map((i) => {
+                                const userName = `EcoWarrior_${100 + i}`;
+                                const initials = "EW";
+                                const colors = ['bg-emerald-500', 'bg-blue-500', 'bg-amber-500', 'bg-purple-500', 'bg-red-500'];
+                                return (
+                                    <div key={i} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/30 rounded-xl">
+                                        <div className="flex items-center gap-3">
+                                            <span className={`w-6 text-center font-bold ${i === 1 ? 'text-yellow-500' : 'text-gray-500'}`}>{i}</span>
+                                            <div className={`w-10 h-10 rounded-full ${colors[i - 1]} flex items-center justify-center text-white font-bold text-xs`}>
+                                                {initials}
+                                            </div>
+                                            <span className="font-medium text-gray-700 dark:text-gray-200">{userName}</span>
+                                        </div>
+                                        <span className="font-bold text-emerald-600">{1000 - (i * 50)} pts</span>
                                     </div>
-                                    <span className="font-bold text-emerald-600">{1000 - (i * 50)} pts</span>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
@@ -321,19 +343,154 @@ const UserDashboard = () => {
         </div>
     );
 
+    const renderProfile = () => (
+        <div className="p-6 animate-fade-in max-w-4xl mx-auto">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Eco-Warrior Profile</h1>
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div className="h-32 bg-gradient-to-r from-emerald-500 to-teal-600"></div>
+                <div className="px-8 pb-8">
+                    <div className="relative flex justify-between items-end -mt-12 mb-6">
+                        <div className="flex items-end gap-4">
+                            <div className="w-24 h-24 bg-white dark:bg-gray-800 rounded-full p-1 shadow-lg">
+                                <div className="w-full h-full bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-400">
+                                    <User size={40} />
+                                </div>
+                            </div>
+                            <div className="mb-1">
+                                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{user?.name || 'Eco Warrior'}</h2>
+                                <p className="text-gray-500 dark:text-gray-400">Citizen Contributor • Joined Jan 2024</p>
+                            </div>
+                        </div>
+                        <Button>Edit Profile</Button>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        <div className="md:col-span-2 space-y-8">
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Account Information</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400 mb-1">
+                                            <Mail size={16} />
+                                            <span className="text-sm">Email</span>
+                                        </div>
+                                        <p className="font-medium text-gray-900 dark:text-white">{user?.email || 'not-available@eco.com'}</p>
+                                    </div>
+                                    <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                        <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400 mb-1">
+                                            <Phone size={16} />
+                                            <span className="text-sm">Phone</span>
+                                        </div>
+                                        <p className="font-medium text-gray-900 dark:text-white">+1 (555) 987-6543</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Achievements</h3>
+                                <div className="flex flex-wrap gap-4">
+                                    {[
+                                        { name: 'First Report', color: 'bg-emerald-100 text-emerald-700' },
+                                        { name: 'Clean Streets', color: 'bg-blue-100 text-blue-700' },
+                                        { name: 'Active Citizen', color: 'bg-amber-100 text-amber-700' }
+                                    ].map((badge, i) => (
+                                        <div key={i} className={`flex items-center gap-2 px-4 py-2 rounded-full ${badge.color}`}>
+                                            <Award size={16} />
+                                            <span className="font-medium text-sm">{badge.name}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-6">
+                            <div className="bg-gray-50 dark:bg-gray-700/30 p-6 rounded-xl border border-gray-100 dark:border-gray-700">
+                                <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Impact Summary</h3>
+                                <div className="space-y-3">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-500 text-sm">Reports Submitted</span>
+                                        <span className="font-bold text-emerald-600">{reports.length}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-500 text-sm">Resolved Issues</span>
+                                        <span className="font-bold text-emerald-600">8</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-500 text-sm">Eco Points</span>
+                                        <span className="font-bold text-purple-600">450</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+
+    const renderMyReports = () => (
+        <div className="p-6 animate-fade-in max-w-6xl mx-auto">
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Submitted Reports</h1>
+                <Button onClick={() => setActiveTab('new-report')} className="flex items-center gap-2">
+                    <PlusCircle size={18} />
+                    New Report
+                </Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {reports.length > 0 ? (
+                    reports.map((report) => (
+                        <div key={report.id} className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow">
+                            <div className="relative h-48">
+                                <img src={report.image} alt={report.title} className="w-full h-full object-cover" />
+                                <div className="absolute top-4 right-4">
+                                    <span className={`px-3 py-1 text-xs font-bold rounded-full shadow-sm ${report.status === 'Solved' ? 'bg-emerald-500 text-white' :
+                                        report.status === 'In Progress' ? 'bg-amber-500 text-white' : 'bg-red-500 text-white'
+                                        }`}>
+                                        {report.status}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="p-5">
+                                <div className="flex items-center gap-2 text-xs text-emerald-600 dark:text-emerald-400 font-bold uppercase mb-2">
+                                    <Leaf size={14} />
+                                    {report.category}
+                                </div>
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{report.title}</h3>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4">{report.description}</p>
+                                <div className="flex items-center justify-between pt-4 border-t border-gray-50 dark:border-gray-700">
+                                    <div className="flex items-center gap-2 text-xs text-gray-400">
+                                        <MapPin size={14} />
+                                        <span>{report.location}</span>
+                                    </div>
+                                    <span className="text-xs text-gray-400">{report.date}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="col-span-full py-20 text-center bg-gray-50 dark:bg-gray-800/50 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
+                        <AlertTriangle className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">No reports found</h3>
+                        <p className="text-gray-500">You haven't submitted any environmental reports yet.</p>
+                        <Button onClick={() => setActiveTab('new-report')} variant="outline" className="mt-6">
+                            Submit Your First Report
+                        </Button>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+
     return (
         <DashboardLayout>
             {activeTab === 'overview' && renderOverview()}
             {activeTab === 'new-report' && renderNewReport()}
             {activeTab === 'map' && renderMapView()}
             {activeTab === 'community' && renderCommunity()}
-            {/* 'my-reports' and 'profile' would be similar sub-views */}
-            {(activeTab === 'my-reports' || activeTab === 'profile') && (
-                <div className="p-10 text-center">
-                    <h2 className="text-xl text-gray-500">Feature coming soon...</h2>
-                    <Button onClick={() => setActiveTab('overview')} className="mt-4">Back to Dashboard</Button>
-                </div>
-            )}
+            {activeTab === 'profile' && renderProfile()}
+            {activeTab === 'my-reports' && renderMyReports()}
         </DashboardLayout>
     );
 };

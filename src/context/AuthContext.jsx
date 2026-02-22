@@ -3,16 +3,19 @@ import React, { createContext, useState, useContext } from 'react';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(() => {
+        const savedUser = localStorage.getItem('eco_action_user');
+        return savedUser ? JSON.parse(savedUser) : null;
+    });
 
     const login = (userData) => {
-        // In a real app, you would validate credentials with a backend here.
-        // For this demo, we'll just set the user state.
         setUser(userData);
+        localStorage.setItem('eco_action_user', JSON.stringify(userData));
     };
 
     const logout = () => {
         setUser(null);
+        localStorage.removeItem('eco_action_user');
     };
 
     return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Leaf, LogOut, User as UserIcon } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
@@ -23,6 +23,26 @@ const Navbar = () => {
 
     // Login Dropdown state
     const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsLoginDropdownOpen(false);
+            }
+        };
+
+        if (isLoginDropdownOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isLoginDropdownOpen]);
 
     // Filter nav links based on role
     const getNavLinks = () => {
@@ -120,7 +140,7 @@ const Navbar = () => {
                                 </Button>
                             </div>
                         ) : (
-                            <div className="relative">
+                            <div className="relative" ref={dropdownRef}>
                                 <Button
                                     variant="primary"
                                     size="sm"
@@ -134,14 +154,14 @@ const Navbar = () => {
                                 {isLoginDropdownOpen && (
                                     <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 border border-gray-200 dark:border-gray-700 ring-1 ring-black ring-opacity-5 animate-fade-in-down z-50">
                                         {[
-                                            { label: 'Citizen Login', role: 'citizen' },
-                                            { label: 'Volunteer Login', role: 'volunteer' },
-                                            { label: 'Admin Login', role: 'admin' }
+                                            { label: 'Citizen Login', path: '/login?role=citizen' },
+                                            { label: 'Volunteer Login', path: '/login?role=volunteer' },
+                                            { label: 'Admin Login', path: '/admin/login' }
                                         ].map((option) => (
                                             <Link
-                                                key={option.role}
-                                                to={`/login?role=${option.role}`}
-                                                className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                                key={option.label}
+                                                to={option.path}
+                                                className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-0"
                                                 onClick={() => setIsLoginDropdownOpen(false)}
                                             >
                                                 {option.label}
@@ -213,8 +233,8 @@ const Navbar = () => {
                                     <Link to="/login?role=volunteer" onClick={() => setIsOpen(false)}>
                                         <Button variant="outline" className="w-full justify-center mb-2">Volunteer Login</Button>
                                     </Link>
-                                    <Link to="/login?role=admin" onClick={() => setIsOpen(false)}>
-                                        <Button variant="primary" className="w-full justify-center">Admin Login</Button>
+                                    <Link to="/admin/login" onClick={() => setIsOpen(false)}>
+                                        <Button variant="primary" className="w-full justify-center bg-blue-600 hover:bg-blue-700 border-blue-600">Admin Login</Button>
                                     </Link>
                                     <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                                         <Link to="/signup" onClick={() => setIsOpen(false)}>

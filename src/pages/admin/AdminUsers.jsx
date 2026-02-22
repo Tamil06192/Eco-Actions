@@ -2,14 +2,19 @@ import React, { useState } from 'react';
 import { Search, UserCheck, UserX, Shield, Award } from 'lucide-react';
 import Button from '../../components/Button';
 
+import profile1 from '../../assets/images/profile1.jpg';
+import profile2 from '../../assets/images/profile2.jpg';
+import profile3 from '../../assets/images/profile3.jpg';
+import profile4 from '../../assets/images/profile4.jpg';
+
 const AdminUsers = () => {
     // Mock user data
     const [users, setUsers] = useState([
-        { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Citizen', status: 'Active', points: 150 },
-        { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'Volunteer', status: 'Active', points: 340 },
-        { id: 3, name: 'Mike Johnson', email: 'mike@example.com', role: 'Citizen', status: 'Suspended', points: 20 },
-        { id: 4, name: 'Sarah Wilson', email: 'sarah@example.com', role: 'Admin', status: 'Active', points: 0 },
-        { id: 5, name: 'David Lee', email: 'david@example.com', role: 'Volunteer', status: 'Pending', points: 0 },
+        { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Citizen', status: 'Active', points: 150, image: profile1 },
+        { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'Volunteer', status: 'Active', points: 340, image: profile2 },
+        { id: 3, name: 'Mike Johnson', email: 'mike@example.com', role: 'Citizen', status: 'Suspended', points: 20, image: profile3 },
+        { id: 4, name: 'Sarah Wilson', email: 'sarah@example.com', role: 'Admin', status: 'Active', points: 0, image: profile4 },
+        { id: 5, name: 'David Lee', email: 'david@example.com', role: 'Volunteer', status: 'Pending', points: 0, image: profile1 },
     ]);
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -60,9 +65,13 @@ const AdminUsers = () => {
                                 <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
-                                            <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-300 font-bold">
-                                                {user.name.charAt(0)}
-                                            </div>
+                                            {user.image ? (
+                                                <img src={user.image} alt={user.name} className="h-10 w-10 rounded-full object-cover" />
+                                            ) : (
+                                                <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-300 font-bold">
+                                                    {user.name.charAt(0)}
+                                                </div>
+                                            )}
                                             <div className="ml-4">
                                                 <div className="text-sm font-medium text-gray-900 dark:text-white">{user.name}</div>
                                                 <div className="text-xs text-gray-500 dark:text-gray-400">{user.email}</div>
@@ -83,8 +92,8 @@ const AdminUsers = () => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.status === 'Active' ? 'bg-green-100 text-green-800' :
-                                                user.status === 'Suspended' ? 'bg-red-100 text-red-800' :
-                                                    'bg-yellow-100 text-yellow-800'
+                                            user.status === 'Suspended' ? 'bg-red-100 text-red-800' :
+                                                'bg-yellow-100 text-yellow-800'
                                             }`}>
                                             {user.status}
                                         </span>

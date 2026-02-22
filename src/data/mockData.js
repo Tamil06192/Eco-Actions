@@ -1,6 +1,18 @@
 import reportImg1 from '../assets/images/images (1).jpg';
 import reportImg2 from '../assets/images/images (2).jpg';
 import reportImg3 from '../assets/images/images (3).jpg';
+import reportImg4 from '../assets/images/images.jpg';
+import event1 from '../assets/images/event-1.jpg';
+import event2 from '../assets/images/event-2.jpg';
+import event3 from '../assets/images/event-3.jpg';
+import event4 from '../assets/images/event-4.jpg';
+import event5 from '../assets/images/event-5.jpg';
+import sewageIcon from '../assets/images/report-sewage.svg';
+import industrialIcon from '../assets/images/report-industrial.svg';
+import garbageIcon from '../assets/images/report-garbage.svg';
+import deforestationIcon from '../assets/images/report-deforestation.svg';
+
+export const MOCK_DATA_VERSION = '2.1';
 
 export const mockReports = [
     {
@@ -21,7 +33,7 @@ export const mockReports = [
         location: "45.124, -93.457",
         status: "In Progress",
         date: "2024-03-09",
-        image: reportImg2,
+        image: sewageIcon,
         category: "Sewage",
         reporter: "user2"
     },
@@ -43,7 +55,7 @@ export const mockReports = [
         location: "45.126, -93.459",
         status: "Open",
         date: "2024-03-07",
-        image: "https://images.unsplash.com/photo-1621451537084-482c73073a0f?auto=format&fit=crop&q=80&w=800",
+        image: event1,
         category: "Garbage",
         reporter: "user2"
     },
@@ -54,7 +66,7 @@ export const mockReports = [
         location: "45.127, -93.460",
         status: "Open",
         date: "2024-03-06",
-        image: "https://images.unsplash.com/photo-1611273426761-53c8577a3c7f?auto=format&fit=crop&q=80&w=800",
+        image: industrialIcon,
         category: "Air Pollution",
         reporter: "user1"
     },
@@ -65,7 +77,7 @@ export const mockReports = [
         location: "45.128, -93.461",
         status: "In Progress",
         date: "2024-03-05",
-        image: "https://images.unsplash.com/photo-1618477462146-8d1d8328bee3?auto=format&fit=crop&q=80&w=800",
+        image: sewageIcon,
         category: "Water Pollution",
         reporter: "user2"
     },
@@ -76,7 +88,7 @@ export const mockReports = [
         location: "45.129, -93.462",
         status: "Solved",
         date: "2024-03-04",
-        image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800",
+        image: event3,
         category: "Noise Pollution",
         reporter: "user1"
     },
@@ -87,7 +99,7 @@ export const mockReports = [
         location: "45.130, -93.463",
         status: "Open",
         date: "2024-03-03",
-        image: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&q=80&w=800",
+        image: reportImg1,
         category: "Garbage",
         reporter: "user2"
     },
@@ -98,7 +110,7 @@ export const mockReports = [
         location: "45.131, -93.464",
         status: "Open",
         date: "2024-03-02",
-        image: "https://images.unsplash.com/photo-1574304820684-1d2275685717?auto=format&fit=crop&q=80&w=800",
+        image: sewageIcon,
         category: "Water Pollution",
         reporter: "user1"
     },
@@ -109,7 +121,7 @@ export const mockReports = [
         location: "45.132, -93.465",
         status: "Solved",
         date: "2024-03-01",
-        image: "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&q=80&w=800",
+        image: event4,
         category: "Fire Hazard",
         reporter: "user2"
     },
@@ -120,7 +132,7 @@ export const mockReports = [
         location: "45.133, -93.466",
         status: "Open",
         date: "2024-02-28",
-        image: "https://images.unsplash.com/photo-1611288870280-4a39556c3c5f?auto=format&fit=crop&q=80&w=800",
+        image: industrialIcon,
         category: "Chemical Waste",
         reporter: "user1"
     },
@@ -131,13 +143,13 @@ export const mockReports = [
         location: "45.134, -93.467",
         status: "In Progress",
         date: "2024-02-27",
-        image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800",
+        image: event1,
         category: "Land Degradation",
         reporter: "user2"
     }
 ];
 
-export const users = [
+export const usersArray = [
     { id: 1, name: "John Doe", email: "john@example.com", role: "user" },
     { id: 2, name: "Admin User", email: "admin@example.com", role: "admin" }
 ];
