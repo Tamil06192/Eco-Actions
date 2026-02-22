@@ -1,12 +1,8 @@
-import reportImg1 from '../assets/images/images (1).jpg';
-import reportImg2 from '../assets/images/images (2).jpg';
-import reportImg3 from '../assets/images/images (3).jpg';
-import reportImg4 from '../assets/images/images.jpg';
-import event1 from '../assets/images/event-1.jpg';
-import event2 from '../assets/images/event-2.jpg';
-import event3 from '../assets/images/event-3.jpg';
-import event4 from '../assets/images/event-4.jpg';
-import event5 from '../assets/images/event-5.jpg';
+import new1 from '../assets/images/new1.jpg';
+import new2 from '../assets/images/new2.jpg';
+import new3 from '../assets/images/new3.jpg';
+import new4 from '../assets/images/new4.jpg';
+import new5 from '../assets/images/new5.jpg';
 import sewageIcon from '../assets/images/report-sewage.svg';
 import industrialIcon from '../assets/images/report-industrial.svg';
 import garbageIcon from '../assets/images/report-garbage.svg';
@@ -22,7 +18,7 @@ export const mockReports = [
         location: "45.123, -93.456",
         status: "Open",
         date: "2024-03-10",
-        image: reportImg1,
+        image: new1,
         category: "Garbage",
         reporter: "user1"
     },
@@ -44,7 +40,7 @@ export const mockReports = [
         location: "45.125, -93.458",
         status: "Solved",
         date: "2024-03-08",
-        image: reportImg3,
+        image: new2,
         category: "Deforestation",
         reporter: "user1"
     },
@@ -55,7 +51,7 @@ export const mockReports = [
         location: "45.126, -93.459",
         status: "Open",
         date: "2024-03-07",
-        image: event1,
+        image: new3,
         category: "Garbage",
         reporter: "user2"
     },
@@ -88,7 +84,7 @@ export const mockReports = [
         location: "45.129, -93.462",
         status: "Solved",
         date: "2024-03-04",
-        image: event3,
+        image: new4,
         category: "Noise Pollution",
         reporter: "user1"
     },
@@ -99,7 +95,7 @@ export const mockReports = [
         location: "45.130, -93.463",
         status: "Open",
         date: "2024-03-03",
-        image: reportImg1,
+        image: new5,
         category: "Garbage",
         reporter: "user2"
     },
@@ -121,7 +117,7 @@ export const mockReports = [
         location: "45.132, -93.465",
         status: "Solved",
         date: "2024-03-01",
-        image: event4,
+        image: new1,
         category: "Fire Hazard",
         reporter: "user2"
     },
@@ -143,7 +139,7 @@ export const mockReports = [
         location: "45.134, -93.467",
         status: "In Progress",
         date: "2024-02-27",
-        image: event1,
+        image: new2,
         category: "Land Degradation",
         reporter: "user2"
     }

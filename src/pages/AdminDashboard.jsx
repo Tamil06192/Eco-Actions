@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { StorageService } from '../services/storage';
-import { Filter, Search, MoreVertical, BarChart, AlertCircle, CheckSquare, Clock } from 'lucide-react';
+import Card from '../components/Card';
 
 const AdminDashboard = () => {
     const [reports, setReports] = useState(StorageService.getReports());
@@ -14,10 +12,10 @@ const AdminDashboard = () => {
     const filteredReports = filter === 'All' ? reports : reports.filter(r => r.status === filter);
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 animate-fade-in">
             {/* Admin Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
+                <Card className="p-6" delay="stagger-1">
                     <div className="flex items-center gap-4">
                         <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
                             <BarChart className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -27,8 +25,8 @@ const AdminDashboard = () => {
                             <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{reports.length}</h3>
                         </div>
                     </div>
-                </div>
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
+                </Card>
+                <Card className="p-6" delay="stagger-2">
                     <div className="flex items-center gap-4">
                         <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-lg">
                             <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
@@ -38,8 +36,8 @@ const AdminDashboard = () => {
                             <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{reports.filter(r => r.status === 'Open').length}</h3>
                         </div>
                     </div>
-                </div>
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
+                </Card>
+                <Card className="p-6" delay="stagger-3">
                     <div className="flex items-center gap-4">
                         <div className="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
                             <Clock className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
@@ -49,8 +47,8 @@ const AdminDashboard = () => {
                             <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{reports.filter(r => r.status === 'In Progress').length}</h3>
                         </div>
                     </div>
-                </div>
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
+                </Card>
+                <Card className="p-6" delay="stagger-4">
                     <div className="flex items-center gap-4">
                         <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
                             <CheckSquare className="w-6 h-6 text-green-600 dark:text-green-400" />
@@ -60,7 +58,7 @@ const AdminDashboard = () => {
                             <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{reports.filter(r => r.status === 'Solved').length}</h3>
                         </div>
                     </div>
-                </div>
+                </Card>
             </div>
 
             <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
@@ -90,7 +88,7 @@ const AdminDashboard = () => {
                 </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+            <Card className="overflow-hidden" delay="stagger-4">
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead className="bg-gray-50 dark:bg-gray-700/50">
@@ -152,7 +150,7 @@ const AdminDashboard = () => {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </Card>
         </div>
     );
 };

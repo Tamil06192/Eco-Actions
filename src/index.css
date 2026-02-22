@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 @layer base {
   body {
@@ -15,6 +15,18 @@
 
   .animate-fade-in {
     animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  .glass-card {
+    @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border border-white/20 dark:border-gray-700/30;
   }
 
   @keyframes fadeInUp {
@@ -38,6 +50,115 @@
       opacity: 1;
     }
   }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .stagger-1 {
+    animation-delay: 100ms;
+  }
+
+  .stagger-2 {
+    animation-delay: 200ms;
+  }
+
+  .stagger-3 {
+    animation-delay: 300ms;
+  }
+
+  .stagger-4 {
+    animation-delay: 400ms;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+
+  .text-glow-primary {
+    text-shadow: 0 0 15px rgba(16, 185, 129, 0.5), 0 0 30px rgba(16, 185, 129, 0.2);
+  }
+
+  @keyframes growGrass {
+    from {
+      transform: scaleY(0);
+      opacity: 0;
+    }
+
+    to {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes swayGrass {
+
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+
+    50% {
+      transform: rotate(5deg);
+    }
+  }
+
+  .grass-blade {
+    transform-origin: bottom;
+    animation: growGrass 2s ease-out forwards, swayGrass 3s ease-in-out infinite alternate;
+    /* Realistic tapered shape */
+    clip-path: polygon(10% 100%, 90% 100%, 50% 0%);
+    box-shadow: none;
+    /* clip-path hides box-shadow anyway */
+  }
+
+  .grass-blade-near {
+    z-index: 10;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  }
+
+  .grass-blade-mid {
+    z-index: 5;
+    opacity: 0.8;
+  }
+
+  .grass-blade-far {
+    z-index: 1;
+    opacity: 0.5;
+    filter: blur(0.5px);
+  }
+
+  @keyframes fallingLeaf {
+    0% {
+      transform: translate(0, -10px) rotate(0deg);
+      opacity: 0;
+    }
+
+    10% {
+      opacity: 0.8;
+    }
+
+    100% {
+      transform: translate(100px, 100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+
+  .falling-leaf {
+    position: absolute;
+    top: -20px;
+    animation: fallingLeaf 10s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
 /* Custom Scrollbar for Webkit browsers */
@@ -46,9 +167,22 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100 dark:bg-gray-800;
+  background: #f3f4f6;
+  /* Gray-100 fallback */
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1f2937;
+  /* Gray-800 fallback */
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary-500 rounded-full hover:bg-primary-600;
+  background: #10b981;
+  /* Emerald-500 fallback */
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #059669;
+  /* Emerald-600 fallback */
 }

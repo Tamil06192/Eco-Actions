@@ -16,9 +16,11 @@ import {
     Award
 } from 'lucide-react';
 
-import event1 from '../assets/images/event-1.jpg';
-import event2 from '../assets/images/event-2.jpg';
-import event3 from '../assets/images/event-3.jpg';
+import Card from '../components/Card';
+
+import event1 from '../assets/images/new1.jpg';
+import event2 from '../assets/images/new2.jpg';
+import event3 from '../assets/images/new3.jpg';
 import event4 from '../assets/images/event-4.jpg';
 import event5 from '../assets/images/event-5.jpg';
 
@@ -38,10 +40,10 @@ const VolunteerDashboard = () => {
     const renderOverview = () => (
         <div className="space-y-8 animate-fade-in p-6">
             {/* Welcome Banner */}
-            <div className="relative bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl overflow-hidden shadow-lg">
+            <div className="relative bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl overflow-hidden shadow-lg transition-transform hover:scale-[1.01] duration-500">
                 <div className="absolute inset-0">
                     <img
-                        src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&q=80&w=1600"
+                        src={event3}
                         alt="Volunteers"
                         className="w-full h-full object-cover opacity-20 mix-blend-overlay"
                     />
@@ -57,23 +59,23 @@ const VolunteerDashboard = () => {
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
-                    { label: 'Hours Volunteer', value: '24', icon: Clock, color: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-900/20', border: 'border-amber-200 dark:border-amber-800' },
-                    { label: 'Tasks Completed', value: '8', icon: CheckCircle, color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-900/20', border: 'border-emerald-200 dark:border-emerald-800' },
-                    { label: 'Upcoming Shifts', value: '3', icon: Calendar, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-900/20', border: 'border-blue-200 dark:border-blue-800' },
-                    { label: 'Impact Points', value: '350', icon: Trophy, color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-900/20', border: 'border-purple-200 dark:border-purple-800' },
+                    { label: 'Hours Volunteer', value: '24', icon: Clock, color: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-900/20', border: 'border-amber-200 dark:border-amber-800', delay: 'stagger-1' },
+                    { label: 'Tasks Completed', value: '8', icon: CheckCircle, color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-900/20', border: 'border-emerald-200 dark:border-emerald-800', delay: 'stagger-2' },
+                    { label: 'Upcoming Shifts', value: '3', icon: Calendar, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-900/20', border: 'border-blue-200 dark:border-blue-800', delay: 'stagger-3' },
+                    { label: 'Impact Points', value: '350', icon: Trophy, color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-900/20', border: 'border-purple-200 dark:border-purple-800', delay: 'stagger-4' },
                 ].map((stat, index) => (
-                    <div key={index} className={`p-6 rounded-xl border ${stat.border} ${stat.bg} transition-transform hover:scale-105`}>
+                    <Card key={index} className={`p-6 border ${stat.border} ${stat.bg}`} delay={stat.delay}>
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="text-gray-600 dark:text-gray-300 font-medium">{stat.label}</h3>
                             <stat.icon className={`${stat.color} w-6 h-6`} />
                         </div>
                         <div className="text-3xl font-bold text-gray-900 dark:text-white">{stat.value}</div>
-                    </div>
+                    </Card>
                 ))}
             </div>
 
             {/* Upcoming Shifts Preview */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+            <Card className="p-6" delay="stagger-4">
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-xl font-bold text-gray-900 dark:text-white">Upcoming Shifts</h2>
                     <Button variant="ghost" size="sm" onClick={() => setActiveTab('shifts')}>View All</Button>
@@ -105,7 +107,7 @@ const VolunteerDashboard = () => {
                         </div>
                     ))}
                 </div>
-            </div>
+            </Card>
         </div>
     );
 
@@ -123,13 +125,13 @@ const VolunteerDashboard = () => {
             <div className="p-6 animate-fade-in max-w-6xl mx-auto">
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Available Volunteer Opportunities</h1>
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {tasks.map((task) => (
-                        <div key={task.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col hover:shadow-md transition-shadow">
-                            <div className="relative h-48">
+                    {tasks.map((task, index) => (
+                        <Card key={task.id} className="flex flex-col" delay={`stagger-${(index % 4) + 1}`}>
+                            <div className="relative h-48 overflow-hidden">
                                 <img
                                     src={task.image}
                                     alt={task.title}
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                                 />
                                 <div className="absolute top-4 right-4 bg-white dark:bg-gray-900 px-2 py-1 rounded-full text-xs font-bold text-emerald-600 shadow-sm">
                                     {task.spots} Spots Left
@@ -152,7 +154,7 @@ const VolunteerDashboard = () => {
                                     <Button size="sm">Sign Up</Button>
                                 </div>
                             </div>
-                        </div>
+                        </Card>
                     ))}
                 </div>
             </div>
@@ -168,7 +170,7 @@ const VolunteerDashboard = () => {
                     { title: 'Food Drive', date: 'Sun, Aug 25', time: '10:00 AM - 02:00 PM', location: 'Community Center', role: 'Distributor', status: 'Confirmed' },
                     { title: 'Tree Planting', date: 'Sat, Aug 31', time: '08:00 AM - 01:00 PM', location: 'City Park', role: 'Planter', status: 'Pending' },
                 ].map((shift, i) => (
-                    <div key={i} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 flex flex-col md:flex-row gap-6">
+                    <Card key={i} className="p-6 flex flex-col md:flex-row gap-6" delay={`stagger-${(i % 4) + 1}`}>
                         <div className="flex-shrink-0 flex flex-col items-center justify-center w-20 h-20 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-100 dark:border-emerald-800">
                             <span className="text-xs uppercase">{shift.date.split(',')[0]}</span>
                             <span className="text-xl">{shift.date.split(' ')[2]}</span>
@@ -201,7 +203,7 @@ const VolunteerDashboard = () => {
                                 )}
                             </div>
                         </div>
-                    </div>
+                    </Card>
                 ))}
             </div>
         </div>
@@ -210,13 +212,13 @@ const VolunteerDashboard = () => {
     const renderProfile = () => (
         <div className="p-6 animate-fade-in max-w-4xl mx-auto">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Volunteer Profile</h1>
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <Card className="overflow-hidden" delay="stagger-1">
                 <div className="h-32 bg-gradient-to-r from-emerald-500 to-teal-600"></div>
                 <div className="px-8 pb-8">
                     <div className="relative flex justify-between items-end -mt-12 mb-6">
                         <div className="flex items-end gap-4">
                             <div className="w-24 h-24 bg-white dark:bg-gray-800 rounded-full p-1 shadow-lg">
-                                <div className="w-full h-full bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-400">
+                                <div className="w-full h-full bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-400 overflow-hidden">
                                     <User size={40} />
                                 </div>
                             </div>
@@ -233,14 +235,14 @@ const VolunteerDashboard = () => {
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Contact Information</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                    <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700 transition-colors hover:bg-white dark:hover:bg-gray-700">
                                         <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400 mb-1">
                                             <Mail size={16} />
                                             <span className="text-sm">Email</span>
                                         </div>
                                         <p className="font-medium text-gray-900 dark:text-white">{user?.email}</p>
                                     </div>
-                                    <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                    <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700 transition-colors hover:bg-white dark:hover:bg-gray-700">
                                         <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400 mb-1">
                                             <Phone size={16} />
                                             <span className="text-sm">Phone</span>
@@ -258,7 +260,7 @@ const VolunteerDashboard = () => {
                                         { name: 'Team Player', color: 'bg-blue-100 text-blue-700' },
                                         { name: 'Early Bird', color: 'bg-amber-100 text-amber-700' }
                                     ].map((badge, i) => (
-                                        <div key={i} className={`flex items-center gap-2 px-4 py-2 rounded-full ${badge.color}`}>
+                                        <div key={i} className={`flex items-center gap-2 px-4 py-2 rounded-full ${badge.color} transition-transform hover:scale-105 cursor-default shadow-sm hover:shadow-md`}>
                                             <Award size={16} />
                                             <span className="font-medium text-sm">{badge.name}</span>
                                         </div>
@@ -272,7 +274,7 @@ const VolunteerDashboard = () => {
                                 <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Skills & Interests</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {['Gardening', 'Teaching', 'Event Planning', 'First Aid'].map((skill) => (
-                                        <span key={skill} className="px-3 py-1 bg-white dark:bg-gray-600 border border-gray-200 dark:border-gray-500 rounded-lg text-sm text-gray-700 dark:text-gray-200">
+                                        <span key={skill} className="px-3 py-1 bg-white dark:bg-gray-600 border border-gray-200 dark:border-gray-500 rounded-lg text-sm text-gray-700 dark:text-gray-200 hover:border-emerald-500 dark:hover:border-emerald-400 transition-colors cursor-default">
                                             {skill}
                                         </span>
                                     ))}
@@ -281,7 +283,7 @@ const VolunteerDashboard = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Card>
         </div>
     );
 

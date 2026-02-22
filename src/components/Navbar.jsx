@@ -69,7 +69,59 @@ const Navbar = () => {
 
     const navLinks = getNavLinks();
 
-    const isActive = (path) => location.pathname === path;
+    const [activeSection, setActiveSection] = useState('');
+
+    useEffect(() => {
+        // Only run observer on home page where sections exist
+        if (location.pathname !== '/home') {
+            setActiveSection('');
+            return;
+        }
+
+        const sections = ['about', 'service'];
+        const observers = [];
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -70% 0px', // Trigger when section is in the upper part of the viewport
+            threshold: 0
+        };
+
+        const observerCallback = (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setActiveSection(entry.target.id);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+        sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) observer.observe(el);
+        });
+
+        // Also track if we are at the top (Home)
+        const handleScroll = () => {
+            if (window.scrollY < 100) {
+                setActiveSection('');
+            }
+        };
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [location.pathname]);
+
+    const isLinkActive = (link) => {
+        if (link.isScroll) {
+            return activeSection === link.path.split('#')[1];
+        }
+        return location.pathname === link.path && !activeSection;
+    };
 
     return (
         <nav className="fixed w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
@@ -93,7 +145,10 @@ const Navbar = () => {
                                     <a
                                         key={link.name}
                                         href={link.path}
-                                        className="text-sm font-medium text-gray-600 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400 transition-colors duration-200"
+                                        className={`text-sm font-medium transition-colors duration-200 ${isLinkActive(link)
+                                            ? 'text-primary-600 dark:text-primary-400'
+                                            : 'text-gray-600 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400'
+                                            }`}
                                     >
                                         {link.name}
                                     </a>
@@ -101,7 +156,7 @@ const Navbar = () => {
                                     <Link
                                         key={link.name}
                                         to={link.path}
-                                        className={`text-sm font-medium transition-colors duration-200 ${isActive(link.path)
+                                        className={`text-sm font-medium transition-colors duration-200 ${isLinkActive(link)
                                             ? 'text-primary-600 dark:text-primary-400'
                                             : 'text-gray-600 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400'
                                             }`}
@@ -196,7 +251,10 @@ const Navbar = () => {
                                     key={link.name}
                                     href={link.path}
                                     onClick={() => setIsOpen(false)}
-                                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                                    className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${isLinkActive(link)
+                                        ? 'bg-primary-50 text-primary-600 dark:bg-gray-800 dark:text-primary-400'
+                                        : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                                        }`}
                                 >
                                     {link.name}
                                 </a>
@@ -205,7 +263,7 @@ const Navbar = () => {
                                     key={link.name}
                                     to={link.path}
                                     onClick={() => setIsOpen(false)}
-                                    className={`block px-3 py-2 rounded-md text-base font-medium ${isActive(link.path)
+                                    className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${isLinkActive(link)
                                         ? 'bg-primary-50 text-primary-600 dark:bg-gray-800 dark:text-primary-400'
                                         : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
                                         }`}
