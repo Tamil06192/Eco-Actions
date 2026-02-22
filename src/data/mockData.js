@@ -1,3 +1,7 @@
+import reportImg1 from '../assets/images/images (1).jpg';
+import reportImg2 from '../assets/images/images (2).jpg';
+import reportImg3 from '../assets/images/images (3).jpg';
+
 export const mockReports = [
     {
         id: 1,
@@ -6,7 +10,7 @@ export const mockReports = [
         location: "45.123, -93.456",
         status: "Open",
         date: "2024-03-10",
-        image: "https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&q=80&w=800",
+        image: reportImg1,
         category: "Garbage",
         reporter: "user1"
     },
@@ -17,7 +21,7 @@ export const mockReports = [
         location: "45.124, -93.457",
         status: "In Progress",
         date: "2024-03-09",
-        image: "https://images.unsplash.com/photo-1549480654-e67f08149e29?auto=format&fit=crop&q=80&w=800",
+        image: reportImg2,
         category: "Sewage",
         reporter: "user2"
     },
@@ -28,7 +32,7 @@ export const mockReports = [
         location: "45.125, -93.458",
         status: "Solved",
         date: "2024-03-08",
-        image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800",
+        image: reportImg3,
         category: "Deforestation",
         reporter: "user1"
     },

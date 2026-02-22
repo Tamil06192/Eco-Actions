@@ -7,6 +7,10 @@ import Service from './Service';
 import homeHero from '../assets/images/home-hero.jpg';
 import homeFeature from '../assets/images/home-feature.jpg';
 import eventImage from '../assets/images/event-1.jpg';
+import profile1 from '../assets/images/profile1.jpg';
+import profile2 from '../assets/images/profile2.jpg';
+import profile3 from '../assets/images/profile3.jpg';
+import { mockReports } from '../data/mockData';
 
 const Home = () => {
     return (
@@ -139,15 +143,37 @@ const Home = () => {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">Recent Community Reports</h2>
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {[...Array(9)].map((_, i) => (
-                            <div key={i} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-                                <div className="h-40 bg-gray-200 dark:bg-gray-700 rounded-md mb-4 flex items-center justify-center">
-                                    <Camera className="text-gray-400 w-12 h-12" />
+                        {mockReports.slice(0, 6).map((report) => (
+                            <div key={report.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
+                                <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-md mb-4 overflow-hidden relative group">
+                                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
+                                    <img
+                                        src={report.image}
+                                        alt={report.title}
+                                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                                    />
+                                    <div className="absolute top-2 right-2">
+                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${report.status === 'Solved' ? 'bg-green-100 text-green-800 border border-green-200' :
+                                                report.status === 'In Progress' ? 'bg-yellow-100 text-yellow-800 border border-yellow-200' :
+                                                    'bg-red-100 text-red-800 border border-red-200'
+                                            }`}>
+                                            {report.status}
+                                        </span>
+                                    </div>
                                 </div>
-                                <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-2">Community Report #{i + 1}</h3>
-                                <p className="text-gray-500 dark:text-gray-400 text-sm">
-                                    Citizens actively reporting issues in their local neighborhoods to foster a cleaner environment.
-                                </p>
+                                <div className="flex-1">
+                                    <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-2 line-clamp-1">{report.title}</h3>
+                                    <p className="text-gray-500 dark:text-gray-400 text-sm line-clamp-2">
+                                        {report.description}
+                                    </p>
+                                </div>
+                                <div className="mt-4 flex items-center justify-between text-xs text-gray-400 pt-4 border-t border-gray-100 dark:border-gray-700">
+                                    <div className="flex items-center">
+                                        <MapPin className="w-3 h-3 mr-1" />
+                                        <span>{report.location}</span>
+                                    </div>
+                                    <span>{report.date}</span>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -178,17 +204,40 @@ const Home = () => {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-12 text-center">What People Say</h2>
                     <div className="grid gap-8 md:grid-cols-3">
-                        {[1, 2, 3].map((i) => (
-                            <div key={i} className="bg-gray-50 dark:bg-gray-700 p-8 rounded-xl relative">
-                                <div className="absolute top-0 left-0 transform -translate-x-2 -translate-y-4 text-6xl text-primary-200 dark:text-gray-600 opacity-50">"</div>
-                                <p className="text-gray-600 dark:text-gray-300 italic mb-6">
-                                    "EcoAction has completely transformed how our neighborhood deals with waste. It's so easy to use and the response time is incredible."
+                        {[
+                            {
+                                quote: "EcoAction has completely transformed how our neighborhood deals with waste. It's so easy to use and the response time is incredible.",
+                                name: "Sarah Johnson",
+                                role: "Community Leader",
+                                image: profile1
+                            },
+                            {
+                                quote: "I reported an illegal dump site on Monday, and by Wednesday it was cleared! Seeing the impact of my report was so satisfying.",
+                                name: "Michael Chen",
+                                role: "Local Resident",
+                                image: profile2
+                            },
+                            {
+                                quote: "As a volunteer, I've met amazing people through the cleanup events. This platform makes it easy to find where help is needed most.",
+                                name: "Emily Rodriguez",
+                                role: "Environmental Activist",
+                                image: profile3
+                            }
+                        ].map((testimonial, i) => (
+                            <div key={i} className="bg-gray-50 dark:bg-gray-700 p-8 rounded-xl relative hover:-translate-y-1 transition-transform duration-300">
+                                <div className="absolute top-0 left-0 transform -translate-x-2 -translate-y-4 text-6xl text-primary-200 dark:text-gray-600 opacity-50 font-serif">"</div>
+                                <p className="text-gray-600 dark:text-gray-300 italic mb-6 relative z-10">
+                                    "{testimonial.quote}"
                                 </p>
                                 <div className="flex items-center">
-                                    <div className="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                                    <img
+                                        src={testimonial.image}
+                                        alt={testimonial.name}
+                                        className="w-12 h-12 rounded-full object-cover mr-4 border-2 border-primary-100 dark:border-gray-600"
+                                    />
                                     <div>
-                                        <div className="font-semibold text-gray-900 dark:text-white">Jane Doe {i}</div>
-                                        <div className="text-sm text-gray-500 dark:text-gray-400">Community Leader</div>
+                                        <div className="font-semibold text-gray-900 dark:text-white">{testimonial.name}</div>
+                                        <div className="text-sm text-gray-500 dark:text-gray-400">{testimonial.role}</div>
                                     </div>
                                 </div>
                             </div>
