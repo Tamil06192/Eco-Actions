@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - ENVIRONET</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            950: '#052e16',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-white dark:bg-gray-950 transition-colors duration-200">
+    <!-- Page Loader -->
+    <div id="page-loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <div id="navbar-container"></div>
+
+    <main class="pt-32 pb-24 px-4 overflow-hidden relative">
+        <div
+            class="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2">
+        </div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-20 reveal reveal-up">
+                <h1 class="text-5xl md:text-7xl font-black text-gray-900 dark:text-white mb-8 tracking-tight">
+                    Our <span class="text-emerald-500">Services</span>
+                </h1>
+                <p class="max-w-2xl mt-5 mx-auto text-xl text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+                    We connect citizens, volunteers, and authorities with cutting-edge tools to create a cleaner, more
+                    sustainable environment.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
+                <div
+                    class="p-10 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-2xl transition-all group reveal reveal-up">
+                    <div
+                        class="w-14 h-14 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="zap" class="text-emerald-600 w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-black mb-4 group-hover:text-emerald-500">Smart Reporting</h3>
+                    <p class="text-gray-500 font-medium leading-relaxed">Easily report environmental hazards in your
+                        area with precise GPS location and photo evidence.</p>
+                </div>
+                <div
+                    class="p-10 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-2xl transition-all group reveal reveal-up delay-100">
+                    <div
+                        class="w-14 h-14 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="bar-chart-3" class="text-blue-600 w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-black mb-4 group-hover:text-emerald-500">Real-time Tracking</h3>
+                    <p class="text-gray-500 font-medium leading-relaxed">Monitor the status of your reports in real-time
+                        as authorities and volunteers respond.</p>
+                </div>
+                <div
+                    class="p-10 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-2xl transition-all group reveal reveal-up delay-200">
+                    <div
+                        class="w-14 h-14 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="users" class="text-indigo-600 w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-black mb-4 group-hover:text-emerald-500">Volunteer Network</h3>
+                    <p class="text-gray-500 font-medium leading-relaxed">Join local cleanup drives, track your impact,
+                        and earn Eco Points for service.</p>
+                </div>
+            </div>
+
+            <div
+                class="mt-32 p-12 bg-gray-900 rounded-[40px] text-center relative overflow-hidden group reveal reveal-scale">
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-5xl font-black text-white mb-6">Ready to make a difference?</h2>
+                    <p class="text-gray-400 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-medium">Join thousands of
+                        citizens who are already helping to protect our local environment.</p>
+                    <a href="signup.html"
+                        class="px-10 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black text-lg inline-block transition-all hover-lift hover-glow">
+                        Get Started Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="js/app.js"></script>
+    <script>
+        fetch('home.html').then(res => res.text()).then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const navbar = doc.querySelector('nav');
+            const footer = doc.querySelector('footer');
+
+            if (navbar) document.getElementById('navbar-container').innerHTML = navbar.outerHTML;
+            if (footer) document.getElementById('footer-container').innerHTML = footer.outerHTML;
+
+            if (window.lucide) lucide.createIcons();
+
+            if (window.initApp) initApp();
+            if (window.initScrollReveal) initScrollReveal();
+        });
+    </script>
+</body>
+
+</html>

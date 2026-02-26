@@ -1,4 +1,4 @@
-# EcoAction
+# ENVIRONET
 
 A citizen-centric web platform for environmental problem reporting and resolution.
 

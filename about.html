@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - ENVIRONET</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            950: '#052e16',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-white dark:bg-gray-900 transition-colors duration-200">
+    <!-- Page Loader -->
+    <div id="page-loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <div id="navbar-container"></div>
+
+    <main class="pt-20">
+        <div class="animate-fade-in">
+            <!-- Hero Section -->
+            <div class="relative bg-gray-900 text-white py-32 mb-16 overflow-hidden reveal reveal-scale">
+                <div class="absolute inset-0 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&q=80&w=1600"
+                        alt="Volunteers planting trees" class="w-full h-full object-cover opacity-40 scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
+                </div>
+                <div class="relative container mx-auto px-4 text-center">
+                    <h1 class="text-5xl md:text-7xl font-black mb-8 tracking-tight animate-fade-in-down">Protecting Our
+                        <span class="text-emerald-500">Planet</span>
+                    </h1>
+                    <p
+                        class="text-xl md:text-2xl max-w-3xl mx-auto text-gray-300 font-medium leading-relaxed animate-fade-in delay-200">
+                        Building a sustainable future through radical transparency, community action, and next-gen
+                        technology.
+                    </p>
+                </div>
+            </div>
+
+            <div class="container mx-auto px-4">
+                <!-- Mission & Vision -->
+                <div class="grid md:grid-cols-2 gap-12 mb-32">
+                    <div class="p-10 bg-emerald-50 dark:bg-emerald-900/20 rounded-3xl reveal reveal-left">
+                        <div
+                            class="w-16 h-16 bg-white dark:bg-emerald-800 rounded-2xl shadow-xl flex items-center justify-center mb-8 hover-scale transition-all">
+                            <i data-lucide="zap" class="text-emerald-600 w-8 h-8"></i>
+                        </div>
+                        <h2 class="text-3xl font-black text-gray-900 dark:text-white mb-6">Our Mission</h2>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg font-medium">
+                            ENVIRONET is a community-driven platform designed to bridge the gap between citizens and
+                            environmental management organizations.
+                        </p>
+                    </div>
+                    <div class="p-10 bg-blue-50 dark:bg-blue-900/20 rounded-3xl reveal reveal-right">
+                        <div
+                            class="w-16 h-16 bg-white dark:bg-blue-800 rounded-2xl shadow-xl flex items-center justify-center mb-8 hover-scale transition-all">
+                            <i data-lucide="eye" class="text-blue-600 w-8 h-8"></i>
+                        </div>
+                        <h2 class="text-3xl font-black text-gray-900 dark:text-white mb-6">Our Vision</h2>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg font-medium">
+                            We envision a world where every citizen feels empowered to protect their environment.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Team -->
+                <div class="mb-32">
+                    <div class="text-center mb-16 reveal reveal-up">
+                        <h2 class="text-4xl font-black text-gray-900 dark:text-white mb-4">Meet Our Team</h2>
+                        <p class="text-gray-500 font-bold">Dedicated experts working for a better world.</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                        <div
+                            class="p-8 bg-white dark:bg-gray-800 rounded-3xl text-center group border border-gray-100 dark:border-gray-700 reveal reveal-up hover-lift transition-all">
+                            <img src="assets/images/profile1.jpg"
+                                class="w-32 h-32 rounded-full mx-auto mb-6 object-cover border-4 border-white shadow-xl group-hover:scale-110 transition-transform">
+                            <h3 class="text-xl font-bold">Sarah Johnson</h3>
+                            <p class="text-sm font-black text-gray-400">EXECUTIVE DIRECTOR</p>
+                        </div>
+                        <div
+                            class="p-8 bg-white dark:bg-gray-800 rounded-3xl text-center group border border-gray-100 dark:border-gray-700 reveal reveal-up delay-100 hover-lift transition-all">
+                            <img src="assets/images/profile2.jpg"
+                                class="w-32 h-32 rounded-full mx-auto mb-6 object-cover border-4 border-white shadow-xl group-hover:scale-110 transition-transform">
+                            <h3 class="text-xl font-bold">David Smith</h3>
+                            <p class="text-sm font-black text-gray-400">OPERATIONS MANAGER</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Load Navbar and Footer
+        fetch('home.html').then(res => res.text()).then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const navbar = doc.querySelector('nav');
+            const footer = doc.querySelector('footer');
+
+            if (navbar) document.getElementById('navbar-container').innerHTML = navbar.outerHTML;
+            if (footer) document.getElementById('footer-container').innerHTML = footer.outerHTML;
+
+            if (window.lucide) lucide.createIcons();
+
+            // Re-initialize app features
+            if (window.initApp) initApp();
+            if (window.initScrollReveal) initScrollReveal();
+        });
+    </script>
+</body>
+
+</html>

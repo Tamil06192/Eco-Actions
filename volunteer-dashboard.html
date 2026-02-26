@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Dashboard - ENVIRONET</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.4);
+            }
+
+            70% {
+                transform: scale(1.1);
+                box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+            }
+        }
+
+        .map-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.block {
+            display: block;
+        }
+
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            950: '#052e16',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200 font-sans overflow-hidden">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div id="sidebar"
+            class="fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transform -translate-x-full md:translate-x-0 md:static md:h-screen">
+            <div class="flex flex-col h-full">
+                <!-- Logo -->
+                <div class="flex items-center justify-center h-20 border-b border-gray-200 dark:border-gray-800">
+                    <a href="home.html" class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+                        <i data-lucide="leaf" class="w-8 h-8"></i>
+                        <span class="text-xl font-bold">ENVIRONET</span>
+                    </a>
+                </div>
+
+                <!-- Nav -->
+                <nav class="flex-1 overflow-y-auto py-4">
+                    <ul class="space-y-1 px-2">
+                        <li>
+                            <a href="#" data-tab="overview"
+                                class="dashboard-tab flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400">
+                                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                                <span class="font-medium">Overview</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tab="tasks"
+                                class="dashboard-tab flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800">
+                                <i data-lucide="file-text" class="w-5 h-5"></i>
+                                <span class="font-medium">Task Board</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tab="shifts"
+                                class="dashboard-tab flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800">
+                                <i data-lucide="calendar" class="w-5 h-5"></i>
+                                <span class="font-medium">My Shifts</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tab="map"
+                                class="dashboard-tab flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800">
+                                <i data-lucide="map" class="w-5 h-5"></i>
+                                <span class="font-medium">Map View</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tab="community"
+                                class="dashboard-tab flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800">
+                                <i data-lucide="message-square" class="w-5 h-5"></i>
+                                <span class="font-medium">Community</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tab="profile"
+                                class="dashboard-tab flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800">
+                                <i data-lucide="user" class="w-5 h-5"></i>
+                                <span class="font-medium">Profile</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Logout -->
+                <div class="border-t border-gray-200 dark:border-gray-800 p-4">
+                    <a href="index.html"
+                        class="w-full flex items-center gap-3 px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors text-sm font-medium">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto relative w-full">
+            <!-- Mobile Toggle -->
+            <button id="sidebar-toggle"
+                class="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-emerald-600 text-white shadow-lg">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+            <div id="overlay" class="hidden fixed inset-0 bg-black/50 z-30 md:hidden"></div>
+
+            <div id="content-overview" class="tab-content block p-6 space-y-8 animate-fade-in">
+                <!-- Welcome Banner -->
+                <div
+                    class="relative bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl overflow-hidden shadow-lg p-8 md:p-10 text-white">
+                    <h1 class="text-3xl font-bold mb-2">Welcome, Eco Volunteer!</h1>
+                    <p class="text-amber-50 text-lg max-w-xl">Thank you for your dedication. You have 3 upcoming shifts
+                        this week.</p>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div
+                        class="p-6 border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 rounded-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-gray-600 dark:text-gray-300 font-medium">Hours Volunteered</h3>
+                            <i data-lucide="clock" class="text-amber-500 w-6 h-6"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900 dark:text-white">24</div>
+                    </div>
+                    <div
+                        class="p-6 border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-gray-600 dark:text-gray-300 font-medium">Tasks Completed</h3>
+                            <i data-lucide="check-circle" class="text-emerald-500 w-6 h-6"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900 dark:text-white">8</div>
+                    </div>
+                </div>
+
+                <!-- Shifts -->
+                <div class="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm">
+                    <h2 class="text-xl font-bold mb-6">Upcoming Shifts</h2>
+                    <div class="space-y-4">
+                        <div
+                            class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                            <div class="flex items-start gap-4">
+                                <div class="p-3 bg-amber-100 rounded-lg text-amber-600"><i data-lucide="calendar"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold">Beach Cleanup</h3>
+                                    <p class="text-sm text-gray-500">Sat, Aug 24 • 09:00 AM - 12:00 PM</p>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">Team
+                                Lead</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-tasks" class="tab-content p-6 space-y-8 animate-fade-in max-w-6xl mx-auto">
+                <h1 class="text-2xl font-bold mb-6">Available Volunteer Opportunities</h1>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-sm flex flex-col">
+                        <img src="assets/images/new1.jpg" class="h-48 w-full object-cover">
+                        <div class="p-5 flex-1 flex flex-col">
+                            <h3 class="font-bold text-lg mb-2">Beach Cleanup</h3>
+                            <p class="text-gray-500 text-sm mb-4">Join us for our monthly beach cleanup event to protect
+                                marine life.</p>
+                            <div class="mt-auto pt-4 border-t border-gray-100 flex justify-between">
+                                <span class="text-sm text-gray-500 flex items-center gap-1"><i data-lucide="clock"
+                                        class="w-4 h-4"></i> 3 hrs</span>
+                                <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm">Sign Up</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-shifts" class="tab-content p-6 space-y-6 animate-fade-in max-w-4xl mx-auto">
+                <h1 class="text-2xl font-bold mb-6">My Scheduled Shifts</h1>
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-3xl p-6 flex gap-6 shadow-sm border border-gray-100">
+                        <div
+                            class="w-20 h-20 bg-emerald-50 rounded-xl flex flex-col items-center justify-center text-emerald-600 font-bold">
+                            <span class="text-xs uppercase">Sat</span>
+                            <span class="text-xl">24</span>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold">Beach Cleanup</h3>
+                            <p class="text-gray-500">Team Lead</p>
+                            <div class="mt-4 flex gap-4 text-sm text-gray-600">
+                                <span class="flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4"></i> 09:00
+                                    AM - 12:00 PM</span>
+                                <span class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i>
+                                    Sunny Beach</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-map" class="tab-content p-6 space-y-6 animate-fade-in h-screen">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Regional Monitoring</h1>
+                    <div class="flex gap-2">
+                        <button
+                            class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                            <i data-lucide="layers" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+                <div
+                    class="relative h-[calc(100vh-250px)] rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
+                    <div id="volunteer-map" class="h-full w-full z-0"></div>
+                </div>
+            </div>
+
+            <div id="content-community"
+                class="tab-content p-6 space-y-6 animate-fade-in flex flex-col h-[calc(100vh-100px)]">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Community Forum</h1>
+                        <p class="text-gray-500 text-sm">Coordinate with other volunteers and discuss regional issues
+                        </p>
+                    </div>
+                    <div class="flex -space-x-2">
+                        <div
+                            class="w-8 h-8 rounded-full bg-emerald-100 border-2 border-white dark:border-gray-800 flex items-center justify-center text-[10px] font-bold text-emerald-600">
+                            JD</div>
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100 border-2 border-white dark:border-gray-800 flex items-center justify-center text-[10px] font-bold text-blue-600">
+                            AS</div>
+                        <div
+                            class="w-8 h-8 rounded-full bg-amber-100 border-2 border-white dark:border-gray-800 flex items-center justify-center text-[10px] font-bold text-amber-600">
+                            MK</div>
+                        <div
+                            class="w-8 h-8 rounded-full bg-gray-200 border-2 border-white dark:border-gray-800 flex items-center justify-center text-[10px] font-bold text-gray-600">
+                            +12</div>
+                    </div>
+                </div>
+
+                <!-- Chat Box -->
+                <div
+                    class="flex-1 bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col">
+                    <!-- Messages Area -->
+                    <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4">
+                        <!-- Sample Message 1 -->
+                        <div class="flex gap-4 max-w-[80%]">
+                            <div
+                                class="w-10 h-10 rounded-full bg-emerald-100 flex-shrink-0 flex items-center justify-center text-emerald-600 font-bold">
+                                JD</div>
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-sm text-gray-900 dark:text-white">John Doe</span>
+                                    <span class="text-[10px] text-gray-400">10:30 AM</span>
+                                </div>
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-700 p-3 rounded-2xl rounded-tl-none text-sm text-gray-700 dark:text-gray-300">
+                                    Hey team, I noticed a lot of illegal dumping near the north highway marker. Anyone
+                                    available to help with a cleanup shift this Saturday?
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sample Message 2 -->
+                        <div class="flex flex-row-reverse gap-4 max-w-[80%] ml-auto">
+                            <div
+                                class="w-10 h-10 rounded-full bg-emerald-600 flex-shrink-0 flex items-center justify-center text-white font-bold">
+                                ME</div>
+                            <div class="space-y-1 text-right">
+                                <div class="flex items-center justify-end gap-2">
+                                    <span class="text-[10px] text-gray-400">10:35 AM</span>
+                                    <span class="font-bold text-sm text-gray-900 dark:text-white">You</span>
+                                </div>
+                                <div class="bg-emerald-600 p-3 rounded-2xl rounded-tr-none text-sm text-white">
+                                    I'm in! I'll take responsibility for coordinating the disposal truck.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sample Message 3 -->
+                        <div class="flex gap-4 max-w-[80%]">
+                            <div
+                                class="w-10 h-10 rounded-full bg-blue-100 flex-shrink-0 flex items-center justify-center text-blue-600 font-bold">
+                                AS</div>
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-sm text-gray-900 dark:text-white">Alice Smith</span>
+                                    <span class="text-[10px] text-gray-400">10:40 AM</span>
+                                </div>
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-700 p-3 rounded-2xl rounded-tl-none text-sm text-gray-700 dark:text-gray-300">
+                                    Great idea. I can bring extra gloves and bags. Let's make sure we document the
+                                    volume for the weekly report.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="p-4 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-700">
+                        <form id="chat-form" class="flex gap-2">
+                            <input type="text" id="chat-input"
+                                class="flex-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-900 dark:text-white"
+                                placeholder="Discuss issues or take responsibilities...">
+                            <button type="submit"
+                                class="bg-emerald-600 text-white p-2 rounded-xl hover:bg-emerald-700 transition-colors">
+                                <i data-lucide="send" class="w-5 h-5"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-profile" class="tab-content p-6 space-y-8 animate-fade-in max-w-4xl mx-auto">
+                <h1 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Volunteer Profile</h1>
+                <div class="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-sm">
+                    <div class="h-32 bg-gradient-to-r from-emerald-500 to-teal-600"></div>
+                    <div class="px-8 pb-8 -mt-12 flex justify-between items-end">
+                        <div class="flex items-end gap-4">
+                            <div class="w-24 h-24 bg-white dark:bg-gray-800 rounded-full p-1 shadow-lg">
+                                <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center">
+                                    <i data-lucide="user" class="w-10 h-10 text-gray-400"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Volunteer Name</h2>
+                                <p class="text-gray-500">Joined Jan 2024</p>
+                            </div>
+                        </div>
+                        <button
+                            class="bg-emerald-600 text-white px-6 py-2 rounded-xl font-bold transition-all hover:bg-emerald-700">Edit
+                            Profile</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Use real user data from localStorage
+        const user = JSON.parse(localStorage.getItem('environet-user'));
+        if (user) {
+            document.querySelector('.text-2xl.font-bold').textContent = user.name;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - ENVIRONET</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            950: '#052e16',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200 font-sans">
+    <!-- Page Loader -->
+    <div id="page-loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav
+        class="fixed w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center relative">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="home.html" class="flex items-center space-x-2">
+                        <div class="bg-primary-500 p-2 rounded-lg">
+                            <i data-lucide="leaf" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900 dark:text-white">ENVIRONET</span>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-8">
+                    <a href="#home" class="text-sm font-medium text-primary-600 dark:text-primary-400">Home</a>
+                    <a href="#about"
+                        class="text-sm font-medium text-gray-600 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400">About</a>
+                    <a href="#service"
+                        class="text-sm font-medium text-gray-600 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400">Service</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4">
+                    <button id="theme-toggle"
+                        class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
+                        <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    </button>
+                    <div id="auth-actions">
+                        <a href="login.html"
+                            class="px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors">Login</a>
+                    </div>
+                </div>
+
+                <div class="md:hidden flex items-center space-x-4">
+                    <button id="mobile-menu-button" class="text-gray-600 dark:text-gray-300">
+                        <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+                        <i data-lucide="x" id="close-icon" class="w-6 h-6 hidden"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="#home"
+                    class="block px-3 py-2 rounded-md text-base font-medium bg-primary-50 text-primary-600 dark:bg-gray-800 dark:text-primary-400">Home</a>
+                <a href="#about"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800">About</a>
+                <a href="#service"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800">Service</a>
+                <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <a href="login.html" class="block px-3 py-2 text-primary-600 font-medium text-center">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-16 relative z-10">
+        <!-- Hero Section -->
+        <section id="home" class="relative overflow-hidden bg-primary-50 dark:bg-gray-900 pt-16 pb-32">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+                    <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left reveal reveal-left">
+                        <h1>
+                            <span
+                                class="block text-base text-primary-600 font-semibold tracking-wide uppercase animate-fade-in-down parallax"
+                                data-speed="0.1">ENVIRONET</span>
+                            <span
+                                class="mt-1 block text-4xl tracking-tight font-extrabold sm:text-5xl xl:text-6xl text-gray-900 dark:text-white parallax"
+                                data-speed="0.2">
+                                <span class="block text-glow">Report Local</span>
+                                <span class="block text-primary-600 text-glow-primary">Environmental Issues</span>
+                            </span>
+                        </h1>
+                        <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl dark:text-gray-300 parallax"
+                            data-speed="0.3">
+                            Empowering citizens to report illegal dumping, pollution, and other environmental concerns
+                            directly to local authorities. Track progress and assist in resolving issues for a cleaner
+                            community.
+                        </p>
+                        <div class="mt-8 flex space-x-4 justify-center lg:justify-start">
+                            <a href="signup.html"
+                                class="px-8 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-all shadow-lg flex items-center hover-lift hover-glow">
+                                Get Started <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                            </a>
+                            <a href="#about"
+                                class="px-8 py-3 border-2 border-primary-600 text-primary-600 rounded-xl font-bold hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all hover-lift">
+                                Learn More
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mt-12 lg:mt-0 lg:col-span-6 reveal reveal-right delay-200 parallax" data-speed="0.15">
+                        <div
+                            class="relative mx-auto rounded-2xl shadow-2xl overflow-hidden hover:scale-105 transition-transform duration-500 animate-float">
+                            <img src="assets/images/home-hero.jpg" alt="Eco Hero" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-20 bg-white dark:bg-gray-800">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 reveal reveal-up">
+                    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">How It Works</h2>
+                    <p class="mt-4 text-lg text-gray-500 dark:text-gray-300">Three simple steps to make a difference in
+                        your community.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div
+                        class="p-8 bg-gray-50 dark:bg-gray-700 rounded-2xl text-center hover-lift transition-all reveal reveal-up">
+                        <div
+                            class="w-20 h-20 bg-primary-100 dark:bg-primary-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 hover-scale">
+                            <i data-lucide="camera" class="w-10 h-10 text-primary-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Snap a Photo</h3>
+                        <p class="mt-4 text-gray-500 dark:text-gray-300">Capture evidence of the environmental issue
+                            using your smartphone.</p>
+                    </div>
+                    <div
+                        class="p-8 bg-gray-50 dark:bg-gray-700 rounded-2xl text-center hover-lift transition-all reveal reveal-up delay-100">
+                        <div
+                            class="w-20 h-20 bg-primary-100 dark:bg-primary-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 hover-scale">
+                            <i data-lucide="map-pin" class="w-10 h-10 text-primary-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Report Location</h3>
+                        <p class="mt-4 text-gray-500 dark:text-gray-300">Geo-tag the incident so authorities know
+                            exactly where to go.</p>
+                    </div>
+                    <div
+                        class="p-8 bg-gray-50 dark:bg-gray-700 rounded-2xl text-center hover-lift transition-all reveal reveal-up delay-200">
+                        <div
+                            class="w-20 h-20 bg-primary-100 dark:bg-primary-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 hover-scale">
+                            <i data-lucide="check-circle" class="w-10 h-10 text-primary-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Track Resolution</h3>
+                        <p class="mt-4 text-gray-500 dark:text-gray-300">Follow the status of your report from
+                            submission to solution.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section class="py-20 bg-primary-50 dark:bg-gray-900">
+            <div class="container mx-auto px-4">
+                <div class="lg:flex items-center gap-12">
+                    <div class="lg:w-1/2 mb-12 lg:mb-0 reveal reveal-left">
+                        <img src="assets/images/new2.jpg" alt="Cleanup"
+                            class="rounded-3xl shadow-2xl hover:scale-105 transition-all duration-500">
+                    </div>
+                    <div class="lg:w-1/2 space-y-6 reveal reveal-right">
+                        <h2 class="text-4xl font-extrabold text-gray-900 dark:text-white">Upcoming Community Event</h2>
+                        <h3 class="text-2xl text-primary-600 font-bold">City-Wide River Cleanup Drive</h3>
+                        <p class="text-lg text-gray-600 dark:text-gray-300">
+                            Join us this weekend for our biggest cleanup event of the year! We're targeting the city
+                            riverbanks to remove plastic waste and restore the natural habitat.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-center text-gray-700 dark:text-gray-300 reveal reveal-up delay-100">
+                                <i data-lucide="map-pin" class="w-6 h-6 mr-4 text-primary-600"></i>
+                                <span>Central City Park, Riverside Entrance</span>
+                            </div>
+                            <div class="flex items-center text-gray-700 dark:text-gray-300 reveal reveal-up delay-200">
+                                <i data-lucide="calendar" class="w-6 h-6 mr-4 text-primary-600"></i>
+                                <span>Saturday, October 15th @ 9:00 AM</span>
+                            </div>
+                        </div>
+                        <button
+                            class="px-10 py-4 bg-primary-600 text-white rounded-xl font-bold shadow-lg hover:bg-primary-700 transition-all hover-lift hover-glow">Join
+                            the Event</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section class="py-24 bg-gray-50 dark:bg-gray-900">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 reveal reveal-up">
+                    <h2 class="text-4xl font-extrabold text-gray-900 dark:text-white">Recent Community Reports</h2>
+                    <p class="mt-4 text-lg text-gray-500 dark:text-gray-300">Real-time updates from your fellow citizens
+                        making an impact.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Report Card 1 -->
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden hover-lift transition-all reveal reveal-up">
+                        <div class="h-56 relative">
+                            <img src="assets/images/new1.jpg" alt="Report" class="w-full h-full object-cover">
+                            <span
+                                class="absolute top-4 right-4 px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full">Open</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-2">Illegal Dumping near
+                                Highway</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Large pile of construction debris
+                                dumped on the side of the road.</p>
+                            <div
+                                class="flex items-center justify-between text-xs text-gray-400 pt-4 border-t border-gray-100 dark:border-gray-700">
+                                <span class="flex items-center"><i data-lucide="map-pin"
+                                        class="w-4 h-4 mr-1 text-primary-500"></i> 45.123, -93.456</span>
+                                <span>2024-03-10</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Report Card 2 -->
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden hover-lift transition-all reveal reveal-up delay-100">
+                        <div class="h-56 relative">
+                            <img src="assets/images/report-sewage.svg" alt="Report"
+                                class="w-full h-full object-contain p-8 bg-gray-100 dark:bg-gray-700">
+                            <span
+                                class="absolute top-4 right-4 px-3 py-1 bg-yellow-500 text-white text-xs font-bold rounded-full">In
+                                Progress</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-2">Sewage Leak in Park</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Foul smell and visible leakage near
+                                the playground area.</p>
+                            <div
+                                class="flex items-center justify-between text-xs text-gray-400 pt-4 border-t border-gray-100 dark:border-gray-700">
+                                <span class="flex items-center"><i data-lucide="map-pin"
+                                        class="w-4 h-4 mr-1 text-primary-500"></i> 45.124, -93.457</span>
+                                <span>2024-03-09</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Report Card 3 -->
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden hover-lift transition-all reveal reveal-up delay-200">
+                        <div class="h-56 relative">
+                            <img src="assets/images/new2.jpg" alt="Report" class="w-full h-full object-cover">
+                            <span
+                                class="absolute top-4 right-4 px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full">Solved</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-2">Tree Cutting in Protected
+                                Zone</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Several large trees cut down
+                                illegally in the conservation area.</p>
+                            <div
+                                class="flex items-center justify-between text-xs text-gray-400 pt-4 border-t border-gray-100 dark:border-gray-700">
+                                <span class="flex items-center"><i data-lucide="map-pin"
+                                        class="w-4 h-4 mr-1 text-primary-500"></i> 45.125, -93.458</span>
+                                <span>2024-03-08</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-24 bg-primary-600 relative overflow-hidden reveal reveal-up">
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center text-white">
+                    <div class="reveal reveal-up">
+                        <div class="text-5xl font-extrabold mb-2">1,200+</div>
+                        <div class="text-primary-100 font-medium text-lg">Reports Solved</div>
+                    </div>
+                    <div class="reveal reveal-up delay-100">
+                        <div class="text-5xl font-extrabold mb-2">450+</div>
+                        <div class="text-primary-100 font-medium text-lg">Active Volunteers</div>
+                    </div>
+                    <div class="reveal reveal-up delay-200">
+                        <div class="text-5xl font-extrabold mb-2">25</div>
+                        <div class="text-primary-100 font-medium text-lg">Partner NGOs</div>
+                    </div>
+                    <div class="reveal reveal-up delay-300">
+                        <div class="text-5xl font-extrabold mb-2">12</div>
+                        <div class="text-primary-100 font-medium text-lg">Cities Covered</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-24">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-5xl font-black text-gray-900 dark:text-white mb-16 tracking-tight reveal reveal-up">
+                    Protecting Our <span class="text-emerald-500">Planet</span></h2>
+                <div class="grid md:grid-cols-2 gap-12 text-left">
+                    <div class="p-10 bg-emerald-50 dark:bg-emerald-900/20 rounded-3xl reveal reveal-left">
+                        <h3 class="text-2xl font-black mb-4">Our Mission</h3>
+                        <p class="text-gray-600 dark:text-gray-300">ENVIRONET is a community-driven platform designed to
+                            bridge the gap between citizens and environmental management organizations.</p>
+                    </div>
+                    <div class="p-10 bg-blue-50 dark:bg-blue-900/20 rounded-3xl reveal reveal-right">
+                        <h3 class="text-2xl font-black mb-4">Our Vision</h3>
+                        <p class="text-gray-600 dark:text-gray-300">We envision a world where every citizen feels
+                            empowered to protect their environment through transparency and action.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Service Section -->
+        <section id="service" class="py-24 bg-white dark:bg-gray-950">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 reveal reveal-up">
+                    <h2 class="text-5xl font-black mb-4">Our <span class="text-emerald-500">Services</span></h2>
+                    <p class="text-gray-500 max-w-2xl mx-auto">We connect citizens, volunteers, and authorities with
+                        cutting-edge tools.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
+                    <div class="p-8 bg-gray-50 dark:bg-gray-900 rounded-3xl reveal reveal-up">
+                        <div
+                            class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center mb-6 hover-scale">
+                            <i data-lucide="zap" class="text-emerald-600"></i>
+                        </div>
+                        <h3 class="text-xl font-black mb-2">Smart Reporting</h3>
+                        <p class="text-gray-500">Easily report hazards with GPS and photos.</p>
+                    </div>
+                    <div class="p-8 bg-gray-50 dark:bg-gray-900 rounded-3xl reveal reveal-up delay-100">
+                        <div
+                            class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-6 hover-scale">
+                            <i data-lucide="bar-chart-3" class="text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-black mb-2">Real-time Tracking</h3>
+                        <p class="text-gray-500">Monitor your report status live.</p>
+                    </div>
+                    <div class="p-8 bg-gray-50 dark:bg-gray-900 rounded-3xl reveal reveal-up delay-200">
+                        <div
+                            class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center mb-6 hover-scale">
+                            <i data-lucide="shield-check" class="text-purple-600"></i>
+                        </div>
+                        <h3 class="text-xl font-black mb-2">Authority Tools</h3>
+                        <p class="text-gray-500">Powerful dashboards for NGOs.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-12 transition-colors duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="bg-primary-500 p-2 rounded-lg">
+                            <i data-lucide="leaf" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900 dark:text-white">ENVIRONET</span>
+                    </div>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+                        Leading the way in community-driven environmental protection and sustainability.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-6">Platform
+                    </h3>
+                    <ul class="space-y-4">
+                        <li><a href="#"
+                                class="text-gray-500 hover:text-primary-500 dark:text-gray-400 dark:hover:text-primary-400 transition-colors">How
+                                it Works</a></li>
+                        <li><a href="#"
+                                class="text-gray-500 hover:text-primary-500 dark:text-gray-400 dark:hover:text-primary-400 transition-colors">Safety
+                                Guidelines</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-6">Community
+                    </h3>
+                    <ul class="space-y-4">
+                        <li><a href="#"
+                                class="text-gray-500 hover:text-primary-500 dark:text-gray-400 dark:hover:text-primary-400 transition-colors">Volunteers</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-500 hover:text-primary-500 dark:text-gray-400 dark:hover:text-primary-400 transition-colors">Partners</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-6">Connect
+                    </h3>
+                    <div class="flex space-x-4">
+                        <a href="#"
+                            class="p-2 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-400 hover:text-primary-500 transition-colors">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#"
+                            class="p-2 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-400 hover:text-primary-500 transition-colors">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800 text-center">
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                    &copy; 2026 ENVIRONET. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    </script>
+</body>
+
+</html>

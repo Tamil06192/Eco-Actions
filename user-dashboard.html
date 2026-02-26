@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - ENVIRONET</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.block {
+            display: block;
+        }
+
+        #sidebar {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            950: '#052e16',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200 font-sans overflow-hidden">
+    <!-- Page Loader -->
+    <div id="page-loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div id="sidebar"
+            class="fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transform -translate-x-full md:translate-x-0 md:static md:h-screen transition-transform duration-300">
+            <div class="flex flex-col h-full">
+                <!-- Logo -->
+                <div class="flex items-center justify-between h-20 px-6 border-b border-gray-200 dark:border-gray-800">
+                    <a href="home.html"
+                        class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 hover-scale transition-all">
+                        <i data-lucide="leaf" class="w-8 h-8"></i>
+                        <span class="text-xl font-bold">ENVIRONET</span>
+                    </a>
+                    <button id="theme-toggle"
+                        class="p-2 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                        <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    </button>
+                </div>
+
+                <!-- Nav -->
+                <nav class="flex-1 overflow-y-auto py-4">
+                    <ul class="space-y-1 px-2">
+                        <li>
+                            <a href="#" data-tab="overview"
+                                class="dashboard-tab flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400 transition-all">
+                                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                                <span class="font-medium">Overview</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tab="new-report"
+                                class="dashboard-tab flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
+                                <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                                <span class="font-medium">New Report</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tab="my-reports"
+                                class="dashboard-tab flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
+                                <i data-lucide="file-text" class="w-5 h-5"></i>
+                                <span class="font-medium">My Reports</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tab="map"
+                                class="dashboard-tab flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
+                                <i data-lucide="map" class="w-5 h-5"></i>
+                                <span class="font-medium">Map View</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tab="community"
+                                class="dashboard-tab flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
+                                <i data-lucide="users" class="w-5 h-5"></i>
+                                <span class="font-medium">Community</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-tab="profile"
+                                class="dashboard-tab flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
+                                <i data-lucide="user" class="w-5 h-5"></i>
+                                <span class="font-medium">Profile</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- User Profile / Logout -->
+                <div class="border-t border-gray-200 dark:border-gray-800 p-4">
+                    <div class="flex items-center gap-3 mb-4 px-2">
+                        <div
+                            class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold hover-scale transition-all">
+                            US
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Eco Warrior</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 truncate capitalize">Citizen</p>
+                        </div>
+                    </div>
+                    <a href="home.html"
+                        class="w-full flex items-center gap-3 px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors text-sm font-medium">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto relative w-full">
+            <!-- Mobile Toggle -->
+            <button id="sidebar-toggle"
+                class="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-emerald-600 text-white shadow-lg reveal reveal-left">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+            <div id="overlay" class="hidden fixed inset-0 bg-black/50 z-30 md:hidden"></div>
+
+            <div id="content-overview" class="tab-content block p-6 space-y-8">
+                <!-- Welcome Banner -->
+                <div
+                    class="relative bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl overflow-hidden shadow-lg p-8 md:p-10 text-white reveal reveal-scale">
+                    <h1 class="text-3xl font-bold mb-2 animate-fade-in-down">Welcome back, EcoWarrior!</h1>
+                    <p class="text-emerald-50 text-lg max-w-xl animate-fade-in delay-200">Your contributions are making
+                        a real difference. You've helped save 12 trees this month!</p>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div
+                        class="p-6 border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl reveal reveal-up hover-lift transition-all">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-gray-600 dark:text-gray-300 font-medium">Issues Solved</h3>
+                            <i data-lucide="check-circle" class="text-emerald-500 w-6 h-6"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900 dark:text-white">12</div>
+                    </div>
+                    <div
+                        class="p-6 border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 rounded-2xl reveal reveal-up delay-100 hover-lift transition-all">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-gray-600 dark:text-gray-300 font-medium">Pending Review</h3>
+                            <i data-lucide="clock" class="text-amber-500 w-6 h-6"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900 dark:text-white">3</div>
+                    </div>
+                    <div
+                        class="p-6 border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20 rounded-2xl reveal reveal-up delay-200 hover-lift transition-all">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-gray-600 dark:text-gray-300 font-medium">Eco Points</h3>
+                            <i data-lucide="trophy" class="text-purple-500 w-6 h-6"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900 dark:text-white">450</div>
+                    </div>
+                    <div
+                        class="p-6 border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 rounded-2xl reveal reveal-up delay-300 hover-lift transition-all">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-gray-600 dark:text-gray-300 font-medium">Community Rank</h3>
+                            <i data-lucide="users" class="text-blue-500 w-6 h-6"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900 dark:text-white">#5</div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 space-y-6 reveal reveal-left">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Recent Activity</h2>
+                        </div>
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700">
+                            <!-- Activity Item 1 -->
+                            <div
+                                class="p-5 border-b border-gray-100 dark:border-gray-700 flex gap-5 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer">
+                                <img src="assets/images/new1.jpg"
+                                    class="w-20 h-20 rounded-xl object-cover hover-scale transition-all">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <h3 class="font-bold text-gray-900 dark:text-white text-lg">Illegal Dumping near
+                                            Highway</h3>
+                                        <span
+                                            class="px-3 py-1 text-xs font-bold rounded-full bg-red-100 text-red-700 dark:bg-red-900/40">Open</span>
+                                    </div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Large pile of construction
+                                        debris dumped on the side...</p>
+                                </div>
+                            </div>
+                            <!-- Activity Item 2 -->
+                            <div
+                                class="p-5 flex gap-5 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer">
+                                <img src="assets/images/new2.jpg"
+                                    class="w-20 h-20 rounded-xl object-cover hover-scale transition-all">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <h3 class="font-bold text-gray-900 dark:text-white text-lg">Tree Cutting in
+                                            Protected Zone</h3>
+                                        <span
+                                            class="px-3 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40">Solved</span>
+                                    </div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Several large trees cut
+                                        down illegally in the...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Side Stuff -->
+                    <div class="space-y-6 reveal reveal-right">
+                        <div
+                            class="bg-white dark:bg-gray-800 p-8 rounded-[32px] border border-gray-100 dark:border-gray-700 shadow-sm">
+                            <h2 class="text-xl font-black text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                                <i data-lucide="compass" class="text-emerald-500"></i> Impact Journey
+                            </h2>
+                            <div class="space-y-6">
+                                <div class="relative pl-8 border-l-2 border-emerald-100 dark:border-emerald-800">
+                                    <div
+                                        class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/20">
+                                    </div>
+                                    <h3 class="font-bold text-gray-900 dark:text-white text-sm">Tree Planter</h3>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Planted 5 trees in the city
+                                        park.</p>
+                                    <span
+                                        class="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase mt-2 block">Completed</span>
+                                </div>
+                                <div class="relative pl-8 border-l-2 border-emerald-100 dark:border-emerald-800">
+                                    <div
+                                        class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-emerald-100 dark:bg-gray-700 border-2 border-emerald-500">
+                                    </div>
+                                    <h3 class="font-bold text-gray-900 dark:text-white text-sm">River Guardian</h3>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Report 3 water pollution issues.
+                                    </p>
+                                    <span class="text-[10px] font-black text-gray-400 uppercase mt-2 block italic">In
+                                        Progress (1/3)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-white dark:bg-gray-800 p-8 rounded-[32px] border border-gray-100 dark:border-gray-700 shadow-sm">
+                            <h2 class="text-xl font-black text-gray-900 dark:text-white mb-6">Monthly Goals</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-xs font-black uppercase tracking-wider mb-2">
+                                        <span class="text-gray-500">Waste Reports</span>
+                                        <span class="text-emerald-600">80%</span>
+                                    </div>
+                                    <div class="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                        <div
+                                            class="h-full bg-emerald-500 w-[80%] rounded-full shadow-lg transition-all duration-1000">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs font-black uppercase tracking-wider mb-2">
+                                        <span class="text-gray-500">Community Help</span>
+                                        <span class="text-blue-600">45%</span>
+                                    </div>
+                                    <div class="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                        <div
+                                            class="h-full bg-blue-500 w-[45%] rounded-full shadow-lg transition-all duration-1000">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="p-6 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl border border-emerald-100 dark:border-emerald-800 flex gap-4 hover-lift transition-all">
+                            <div
+                                class="p-3 bg-white dark:bg-emerald-800 rounded-xl shadow-sm h-fit hover-scale transition-all">
+                                <i data-lucide="leaf" class="w-6 h-6 text-emerald-600 dark:text-emerald-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-900 dark:text-emerald-100 mb-2">Did You Know?</h3>
+                                <p class="text-sm text-emerald-800 dark:text-emerald-200">Recycling one aluminum can
+                                    saves enough energy to run a TV for three hours.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Report Content -->
+            <div id="content-new-report" class="tab-content p-6 max-w-4xl mx-auto space-y-6">
+                <div class="reveal reveal-up">
+                    <h1 class="text-3xl font-black text-gray-900 dark:text-white mb-2">Submit New Report</h1>
+                    <p class="text-gray-500 dark:text-gray-400">Help preserve our environment by reporting local issues.
+                    </p>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-gray-700 reveal reveal-up delay-100">
+                    <form id="report-form" class="space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Issue
+                                        Category</label>
+                                    <select id="report-category"
+                                        class="w-full rounded-2xl border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white p-4 border focus:ring-emerald-500 focus:border-emerald-500 transition-all outline-none">
+                                        <option>Garbage Dump</option>
+                                        <option>Sewage Leak</option>
+                                        <option>Air Pollution</option>
+                                        <option>Noise Pollution</option>
+                                        <option>Illegal Logging</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Title</label>
+                                    <input id="report-title" required placeholder="Brief summary of the issue"
+                                        class="w-full rounded-2xl border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white p-4 border focus:ring-emerald-500 focus:border-emerald-500 transition-all outline-none">
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Location</label>
+                                    <div class="relative">
+                                        <i data-lucide="map-pin"
+                                            class="absolute left-4 top-4 h-6 w-6 text-emerald-500"></i>
+                                        <input id="report-location" required placeholder="Detecting location..."
+                                            class="w-full rounded-2xl border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white pl-12 p-4 border focus:ring-emerald-500 focus:border-emerald-500 transition-all outline-none">
+                                    </div>
+                                    <p class="mt-2 text-xs text-gray-400">Click the icon to use your current GPS
+                                        location.</p>
+                                </div>
+                            </div>
+                            <div class="space-y-6">
+                                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Photo
+                                    Evidence</label>
+                                <div id="drop-zone"
+                                    class="flex flex-col items-center justify-center w-full min-h-[280px] border-2 border-gray-200 dark:border-gray-600 border-dashed rounded-3xl cursor-pointer bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/10 transition-all group">
+                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                        <i data-lucide="camera"
+                                            class="w-12 h-12 text-emerald-500 mb-4 group-hover:scale-110 transition-transform"></i>
+                                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400 font-bold"
+                                            id="file-name-display">Click to
+                                            upload photo</p>
+                                        <p class="text-xs text-gray-400">PNG, JPG or GIF (MAX. 10MB)</p>
+                                    </div>
+                                    <input type="file" id="report-photo" name="image" class="hidden" accept="image/*">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Detailed
+                                Description</label>
+                            <textarea id="report-description" rows="4" required
+                                placeholder="Describe the issue, its impact, and any other relevant details..."
+                                class="w-full rounded-2xl border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white p-5 border focus:ring-emerald-500 focus:border-emerald-500 transition-all outline-none"></textarea>
+                        </div>
+                        <div class="flex justify-end gap-4">
+                            <button type="button"
+                                class="px-8 py-4 border-2 border-gray-200 dark:border-gray-700 rounded-2xl font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">Save
+                                Draft</button>
+                            <button type="submit"
+                                class="px-10 py-4 bg-emerald-600 text-white rounded-2xl font-bold shadow-xl hover:bg-emerald-700 transition-all hover-lift hover-glow">Submit
+                                Report</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- My Reports Content -->
+            <div id="content-my-reports" class="tab-content p-6 space-y-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h1 class="text-3xl font-black text-gray-900 dark:text-white">My Submissions</h1>
+                        <p class="text-gray-500 mt-1">Track and manage your environmental reports.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <select
+                            class="rounded-xl border-gray-200 dark:bg-gray-800 dark:border-gray-700 p-3 text-sm font-bold border outline-none">
+                            <option>All Status</option>
+                            <option>Open</option>
+                            <option>In Progress</option>
+                            <option>Solved</option>
+                        </select>
+                        <button onclick="document.querySelector('[data-tab=new-report]').click()"
+                            class="bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover-lift">
+                            <i data-lucide="plus" class="w-5 h-5"></i> New Report
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Card 1 -->
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-[32px] overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all group reveal reveal-up">
+                        <div class="h-60 relative overflow-hidden">
+                            <img src="assets/images/new1.jpg"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <span
+                                class="absolute top-4 right-4 px-4 py-1.5 bg-red-500 text-white text-xs font-black rounded-full shadow-lg">OPEN</span>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-xl font-black text-gray-900 dark:text-white mb-2">Illegal Dumping near
+                                Highway</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 line-clamp-2">Large pile of
+                                construction debris dumped on the side of the road, potentially blocking drainage.</p>
+                            <div
+                                class="pt-6 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center text-xs font-bold">
+                                <span class="flex items-center gap-1.5 text-emerald-600"><i data-lucide="map-pin"
+                                        class="w-4 h-4"></i> Sector 14, City North</span>
+                                <span class="text-gray-400">MAR 10, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-[32px] overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all group reveal reveal-up delay-100">
+                        <div class="h-60 relative overflow-hidden">
+                            <img src="assets/images/new2.jpg"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <span
+                                class="absolute top-4 right-4 px-4 py-1.5 bg-emerald-500 text-white text-xs font-black rounded-full shadow-lg">SOLVED</span>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-xl font-black text-gray-900 dark:text-white mb-2">Tree Cutting in Protected
+                                Zone</h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 line-clamp-2">Several large trees
+                                cut down illegally in the conservation area. Reported on Monday.</p>
+                            <div
+                                class="pt-6 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center text-xs font-bold">
+                                <span class="flex items-center gap-1.5 text-emerald-600"><i data-lucide="map-pin"
+                                        class="w-4 h-4"></i> Green Valley Reserve</span>
+                                <span class="text-gray-400">FEB 28, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map View Content -->
+            <div id="content-map" class="tab-content h-full p-6 space-y-6">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-black text-gray-900 dark:text-white">Regional Monitoring</h1>
+                    <div class="flex gap-2">
+                        <button
+                            class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"><i
+                                data-lucide="layers" class="w-5 h-5"></i></button>
+                        <button
+                            class="p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"><i
+                                data-lucide="crosshair" class="w-5 h-5"></i></button>
+                    </div>
+                </div>
+                <div
+                    class="relative h-[calc(100vh-200px)] rounded-[32px] overflow-hidden border border-gray-200 dark:border-gray-700 shadow-xl reveal reveal-scale">
+                    <div id="map" class="h-full w-full z-0"></div>
+                </div>
+            </div>
+
+            <!-- Community Hub Content -->
+            <div id="content-community" class="tab-content p-8 space-y-12">
+                <div class="flex flex-col md:flex-row justify-between items-end gap-6 reveal reveal-up">
+                    <div>
+                        <h1 class="text-4xl font-black text-gray-900 dark:text-white tracking-tight">Community
+                            Engagement</h1>
+                        <p class="text-gray-500 dark:text-gray-400 mt-2 text-lg">Connect with fellow warriors and track
+                            our collective impact.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                    <!-- Left Column: Feed & Leaderboard -->
+                    <div class="lg:col-span-2 space-y-12">
+                        <!-- Sustainability Feed -->
+                        <div class="space-y-8 reveal reveal-left">
+                            <h2 class="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-3">
+                                <i data-lucide="rss" class="text-emerald-500 w-7 h-7"></i> Global Eco Feed
+                            </h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div
+                                    class="bg-white dark:bg-gray-800 rounded-[32px] overflow-hidden border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-xl transition-all group cursor-pointer">
+                                    <div class="h-48 overflow-hidden relative">
+                                        <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                                        </div>
+                                    </div>
+                                    <div class="p-6">
+                                        <div class="flex items-center gap-2 mb-3">
+                                            <span
+                                                class="px-3 py-1 bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 text-[10px] font-black uppercase rounded-full">Innovation</span>
+                                        </div>
+                                        <h3
+                                            class="text-lg font-black text-gray-900 dark:text-white leading-tight mb-2 group-hover:text-emerald-600 transition-colors">
+                                            Vertical Forests: The Future of Urban Green Spaces</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">How new
+                                            architectural designs are incorporating active ecosystems...</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="bg-white dark:bg-gray-800 rounded-[32px] overflow-hidden border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-xl transition-all group cursor-pointer">
+                                    <div class="h-48 overflow-hidden relative">
+                                        <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                                        </div>
+                                    </div>
+                                    <div class="p-6">
+                                        <div class="flex items-center gap-2 mb-3">
+                                            <span
+                                                class="px-3 py-1 bg-blue-100 text-blue-600 dark:bg-blue-900/40 text-[10px] font-black uppercase rounded-full">Oceans</span>
+                                        </div>
+                                        <h3
+                                            class="text-lg font-black text-gray-900 dark:text-white leading-tight mb-2 group-hover:text-emerald-600 transition-colors">
+                                            Microplastic Filter Breakthrough in Local River</h3>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">A local
+                                            research team has developed a new passive filter...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lite Leaderboard -->
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-[40px] border border-gray-100 dark:border-gray-700 shadow-xl overflow-hidden reveal reveal-up">
+                            <div
+                                class="p-8 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-900/50">
+                                <h3 class="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-3">
+                                    <i data-lucide="crown" class="text-amber-500"></i> Elite EcoWarriors
+                                </h3>
+                                <button
+                                    class="text-sm font-black text-emerald-600 hover:underline uppercase tracking-widest">Global
+                                    Rankings</button>
+                            </div>
+                            <div class="divide-y divide-gray-50 dark:divide-gray-700/50">
+                                <!-- Leader 1 -->
+                                <div
+                                    class="p-6 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all group cursor-pointer">
+                                    <div class="flex items-center gap-5">
+                                        <span class="text-2xl font-black text-amber-500 w-8">01</span>
+                                        <div
+                                            class="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center relative overflow-hidden group-hover:scale-110 transition-transform">
+                                            <i data-lucide="user" class="text-amber-600 w-7 h-7"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-black text-lg text-gray-900 dark:text-white">Alex Rivers</p>
+                                            <p class="text-xs text-emerald-600 font-black uppercase tracking-wider">
+                                                Platinum Guardian</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-black text-xl text-gray-900 dark:text-white">12,450 XP</p>
+                                        <p class="text-[10px] text-gray-400 font-black uppercase tracking-widest">152
+                                            Reports Verified</p>
+                                    </div>
+                                </div>
+                                <!-- Leader 2 -->
+                                <div
+                                    class="p-6 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all group cursor-pointer">
+                                    <div class="flex items-center gap-5">
+                                        <span class="text-2xl font-black text-gray-400 w-8">02</span>
+                                        <div
+                                            class="w-14 h-14 rounded-2xl bg-gray-100 dark:bg-gray-700/50 flex items-center justify-center relative overflow-hidden group-hover:scale-110 transition-transform">
+                                            <i data-lucide="user" class="text-gray-400 w-7 h-7"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-black text-lg text-gray-900 dark:text-white">Sarah Chen</p>
+                                            <p class="text-xs text-blue-600 font-black uppercase tracking-wider">Gold
+                                                Contributor</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-black text-xl text-gray-900 dark:text-white">10,820 XP</p>
+                                        <p class="text-[10px] text-gray-400 font-black uppercase tracking-widest">128
+                                            Reports Verified</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Events & Challenges -->
+                    <div class="space-y-10">
+                        <!-- Featured Event -->
+                        <div
+                            class="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-[40px] p-8 text-white shadow-2xl reveal reveal-right relative overflow-hidden group">
+                            <i data-lucide="calendar"
+                                class="absolute -right-8 -bottom-8 w-48 h-48 text-white/10 -rotate-12 group-hover:rotate-0 transition-transform duration-1000"></i>
+                            <div class="relative z-10">
+                                <div
+                                    class="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest mb-6">
+                                    Upcoming Event</div>
+                                <h3 class="text-3xl font-black mb-4 leading-tight">Weekend River Cleanup</h3>
+                                <p class="text-emerald-50/80 text-sm mb-8 leading-relaxed">Join 50+ volunteers this
+                                    Saturday at Oakwood River Park to restore habitats.</p>
+
+                                <div class="flex items-center gap-4 mb-8">
+                                    <div class="flex -space-x-3">
+                                        <div
+                                            class="w-10 h-10 rounded-full border-2 border-emerald-600 bg-emerald-100 flex items-center justify-center text-xs font-black text-emerald-600">
+                                            JD</div>
+                                        <div
+                                            class="w-10 h-10 rounded-full border-2 border-emerald-600 bg-teal-100 flex items-center justify-center text-xs font-black text-teal-600">
+                                            MK</div>
+                                        <div
+                                            class="w-10 h-10 rounded-full border-2 border-emerald-600 bg-lime-100 flex items-center justify-center text-xs font-black text-lime-600">
+                                            +</div>
+                                    </div>
+                                    <span class="text-sm font-bold text-emerald-50">42 warriors going</span>
+                                </div>
+
+                                <button
+                                    class="w-full py-4 bg-white text-emerald-700 rounded-2xl font-black shadow-xl hover:bg-emerald-50 transition-all hover-lift">RSVP
+                                    Now</button>
+                            </div>
+                        </div>
+
+                        <!-- Monthly Challenge -->
+                        <div
+                            class="bg-white dark:bg-gray-800 p-8 rounded-[40px] border border-gray-100 dark:border-gray-700 shadow-xl reveal reveal-right delay-200">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-2xl">
+                                    <i data-lucide="target" class="text-blue-500 w-6 h-6"></i>
+                                </div>
+                                <h3 class="text-xl font-black text-gray-900 dark:text-white">Active Challenge</h3>
+                            </div>
+                            <p class="text-gray-500 dark:text-gray-400 mb-8 font-medium italic">"Report 5 Illegal
+                                Dumping sites to earn the 'Clean City' badge."</p>
+
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-end">
+                                    <span class="text-sm font-black text-gray-900 dark:text-white">Clean City
+                                        Guardian</span>
+                                    <span class="text-2xl font-black text-blue-600">60%</span>
+                                </div>
+                                <div class="h-4 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                    <div
+                                        class="h-full bg-blue-600 w-[60%] rounded-full shadow-lg shadow-blue-500/20 active-progress">
+                                    </div>
+                                </div>
+                                <p
+                                    class="text-[10px] font-black text-gray-400 uppercase tracking-widest text-center mt-2">
+                                    3 of 5 reports submitted</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Content -->
+            <div id="content-profile" class="tab-content p-6 space-y-10 max-w-5xl mx-auto">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-[40px] overflow-hidden shadow-2xl border border-gray-100 dark:border-gray-700 reveal reveal-up">
+                    <div class="h-48 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 relative">
+                        <div class="absolute inset-0 bg-black/10"></div>
+                    </div>
+                    <div class="px-10 pb-12 -mt-20 relative z-10">
+                        <div class="flex flex-col md:flex-row justify-between items-end gap-8">
+                            <div class="flex flex-col md:flex-row items-end gap-6 text-center md:text-left">
+                                <div
+                                    class="w-40 h-40 bg-white dark:bg-gray-800 rounded-[36px] p-1.5 shadow-2xl group cursor-pointer border-4 border-white dark:border-gray-800">
+                                    <div
+                                        class="w-full h-full bg-gray-100 dark:bg-gray-700 rounded-[30px] flex items-center justify-center relative overflow-hidden">
+                                        <i data-lucide="user" class="w-20 h-20 text-gray-400"></i>
+                                        <div
+                                            class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                            <i data-lucide="camera" class="text-white w-8 h-8"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <h2 class="text-4xl font-black text-gray-900 dark:text-white">Eco
+                                        Warrior</h2>
+                                    <p class="text-emerald-600 dark:text-emerald-400 font-black text-lg">
+                                        Senior
+                                        Contributor</p>
+                                    <p class="text-gray-400 font-bold mt-1">Level 15 • 4,500 Total XP</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <button
+                                    class="px-8 py-4 bg-emerald-600 text-white rounded-2xl font-black hover-lift hover-glow transition-all">Edit
+                                    details</button>
+                                <button
+                                    class="p-4 border-2 border-gray-100 dark:border-gray-700 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"><i
+                                        data-lucide="settings" class="w-6 h-6"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 px-4">
+                            <div class="text-center p-6 bg-gray-50 dark:bg-gray-900/50 rounded-3xl">
+                                <p class="text-3xl font-black text-gray-900 dark:text-white">124</p>
+                                <p class="text-xs font-black text-gray-400 uppercase mt-1">Reports</p>
+                            </div>
+                            <div class="text-center p-6 bg-gray-50 dark:bg-gray-900/50 rounded-3xl">
+                                <p class="text-3xl font-black text-gray-900 dark:text-white">82%</p>
+                                <p class="text-xs font-black text-gray-400 uppercase mt-1">Solve Rate</p>
+                            </div>
+                            <div class="text-center p-6 bg-gray-50 dark:bg-gray-900/50 rounded-3xl">
+                                <p class="text-3xl font-black text-gray-900 dark:text-white">15</p>
+                                <p class="text-xs font-black text-gray-400 uppercase mt-1">Badges</p>
+                            </div>
+                            <div class="text-center p-6 bg-gray-50 dark:bg-gray-900/50 rounded-3xl">
+                                <p class="text-3xl font-black text-gray-900 dark:text-white">#5</p>
+                                <p class="text-xs font-black text-gray-400 uppercase mt-1">Rank</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div
+                        class="bg-white dark:bg-gray-800 p-10 rounded-[32px] shadow-xl border border-gray-100 dark:border-gray-700 reveal reveal-left">
+                        <h3 class="font-black text-2xl mb-8 flex items-center gap-3"><i data-lucide="mail"
+                                class="text-blue-500"></i> Account Info</h3>
+                        <div class="space-y-6">
+                            <div class="p-5 bg-gray-50 dark:bg-gray-900/50 rounded-2xl">
+                                <label class="block text-xs font-black text-gray-400 uppercase mb-2">Email
+                                    Address</label>
+                                <p class="font-bold text-gray-900 dark:text-white break-all">
+                                    warrior@environet.org</p>
+                            </div>
+                            <div class="p-5 bg-gray-50 dark:bg-gray-900/50 rounded-2xl">
+                                <label class="block text-xs font-black text-gray-400 uppercase mb-2">Member
+                                    Since</label>
+                                <p class="font-bold text-gray-900 dark:text-white">January 12, 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-gray-800 p-10 rounded-[32px] shadow-xl border border-gray-100 dark:border-gray-700 reveal reveal-right">
+                        <h3 class="font-black text-2xl mb-8 flex items-center gap-3"><i data-lucide="bell"
+                                class="text-emerald-500"></i> Dashboard Perks</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button
+                                class="flex flex-col items-center gap-3 p-6 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl hover:bg-emerald-100 transition-all group">
+                                <i data-lucide="file-down" class="w-8 h-8 text-emerald-600"></i>
+                                <span class="text-sm font-black text-emerald-900 dark:text-emerald-100">Stats
+                                    PDF</span>
+                            </button>
+                            <button
+                                class="flex flex-col items-center gap-3 p-6 bg-amber-50 dark:bg-amber-900/20 rounded-2xl hover:bg-amber-100 transition-all group">
+                                <i data-lucide="share-2" class="w-8 h-8 text-amber-600"></i>
+                                <span class="text-sm font-black text-amber-900 dark:text-amber-100">Share
+                                    Rank</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Use real user data from localStorage
+        const user = JSON.parse(localStorage.getItem('environet-user'));
+        if (user) {
+            document.querySelectorAll('.truncate').forEach(el => {
+                if (el.innerText === 'Eco Warrior') el.innerText = user.name;
+                if (el.innerText === 'Citizen' || el.innerText === 'volunteer' || el.innerText === 'admin') el.innerText = user.role;
+            });
+            document.querySelectorAll('.font-bold.text-gray-900.dark\\:text-white.break-all').forEach(el => {
+                el.innerText = user.email;
+            });
+            document.querySelectorAll('h2.text-4xl.font-black').forEach(el => {
+                el.innerText = user.name;
+            });
+            const avatar = document.querySelector('.w-10.h-10.rounded-full.bg-emerald-100');
+            if (avatar) avatar.innerText = user.name.substring(0, 2).toUpperCase();
+        }
+
+        // Report Submission
+        const reportForm = document.getElementById('report-form');
+        if (reportForm) {
+            reportForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const token = localStorage.getItem('environet-token');
+                if (!token) {
+                    alert('Please log in first');
+                    return;
+                }
+
+                const formData = {
+                    title: reportForm.querySelector('input[placeholder="Brief summary of the issue"]').value,
+                    category: reportForm.querySelector('select').value,
+                    description: reportForm.querySelector('textarea').value,
+                    location: {
+                        lat: 45.123,
+                        lng: -93.456,
+                        address: reportForm.querySelector('input[placeholder="Detecting location..."]').value
+                    },
+                    urgency: 'medium'
+                };
+
+                try {
+                    const response = await fetch('http://localhost:5000/api/complaints', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-auth-token': token
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (response.ok) {
+                        alert('Report submitted successfully!');
+                        reportForm.reset();
+                        document.querySelector('[data-tab="my-reports"]').click();
+                    } else {
+                        const data = await response.json();
+                        alert(data.msg || 'Submission failed');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Server error');
+                }
+            });
+        }
+
+        // Init Map
+        const mapElement = document.getElementById('map');
+        if (mapElement) {
+            const map = L.map('map').setView([45.128, -93.461], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            fetch('http://localhost:5000/api/complaints')
+                .then(res => res.json())
+                .then(data => {
+                    data.forEach(c => {
+                        L.marker([c.location.lat, c.location.lng]).addTo(map)
+                            .bindPopup(`<b>${c.title}</b><br>${c.category} - ${c.status}`);
+                    });
+                });
+
+            document.querySelectorAll('.dashboard-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    if (tab.dataset.tab === 'map') setTimeout(() => map.invalidateSize(), 150);
+                });
+            });
+        }
+
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+
+</html>
