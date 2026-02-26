@@ -1,34 +1,32 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
+  :root {
+    --primary-500: #10b981;
+    --primary-600: #059669;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-500) var(--gray-100);
+  }
+
+  .dark {
+    scrollbar-color: var(--primary-500) var(--gray-800);
+  }
+
   body {
     @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-200;
   }
 }
 
 @layer utilities {
-  .animate-fade-in-up {
-    animation: fadeInUp 0.8s ease-out forwards;
-  }
 
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
-  }
-
-  .animate-slide-up {
-    animation: slideUp 0.6s ease-out forwards;
-  }
-
-  .hover-lift {
-    @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg;
-  }
-
-  .glass-card {
-    @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border border-white/20 dark:border-gray-700/30;
-  }
-
+  /* Animations */
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -63,30 +61,6 @@
     }
   }
 
-  .stagger-1 {
-    animation-delay: 100ms;
-  }
-
-  .stagger-2 {
-    animation-delay: 200ms;
-  }
-
-  .stagger-3 {
-    animation-delay: 300ms;
-  }
-
-  .stagger-4 {
-    animation-delay: 400ms;
-  }
-
-  .text-glow {
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
-  }
-
-  .text-glow-primary {
-    text-shadow: 0 0 15px rgba(16, 185, 129, 0.5), 0 0 30px rgba(16, 185, 129, 0.2);
-  }
-
   @keyframes growGrass {
     from {
       transform: scaleY(0);
@@ -111,13 +85,71 @@
     }
   }
 
+  @keyframes fallingLeaf {
+    0% {
+      transform: translate(0, -10px) rotate(0deg);
+      opacity: 0;
+    }
+
+    10% {
+      opacity: 0.8;
+    }
+
+    100% {
+      transform: translate(100px, 100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+
+  /* Utility Classes */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  .glass-card {
+    @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border border-white/20 dark:border-gray-700/30;
+  }
+
+  .stagger-1 {
+    animation-delay: 100ms;
+  }
+
+  .stagger-2 {
+    animation-delay: 200ms;
+  }
+
+  .stagger-3 {
+    animation-delay: 300ms;
+  }
+
+  .stagger-4 {
+    animation-delay: 400ms;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+
+  .text-glow-primary {
+    text-shadow: 0 0 15px rgba(16, 185, 129, 0.5), 0 0 30px rgba(16, 185, 129, 0.2);
+  }
+
   .grass-blade {
     transform-origin: bottom;
     animation: growGrass 2s ease-out forwards, swayGrass 3s ease-in-out infinite alternate;
-    /* Realistic tapered shape */
     clip-path: polygon(10% 100%, 90% 100%, 50% 0%);
-    box-shadow: none;
-    /* clip-path hides box-shadow anyway */
   }
 
   .grass-blade-near {
@@ -136,22 +168,6 @@
     filter: blur(0.5px);
   }
 
-  @keyframes fallingLeaf {
-    0% {
-      transform: translate(0, -10px) rotate(0deg);
-      opacity: 0;
-    }
-
-    10% {
-      opacity: 0.8;
-    }
-
-    100% {
-      transform: translate(100px, 100vh) rotate(720deg);
-      opacity: 0;
-    }
-  }
-
   .falling-leaf {
     position: absolute;
     top: -20px;
@@ -161,28 +177,24 @@
   }
 }
 
-/* Custom Scrollbar for Webkit browsers */
+/* Webkit Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f3f4f6;
-  /* Gray-100 fallback */
+  background: var(--gray-100);
 }
 
 .dark ::-webkit-scrollbar-track {
-  background: #1f2937;
-  /* Gray-800 fallback */
+  background: var(--gray-800);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #10b981;
-  /* Emerald-500 fallback */
+  background: var(--primary-500);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #059669;
-  /* Emerald-600 fallback */
+  background: var(--primary-600);
 }
